@@ -73,6 +73,8 @@ if(isset($_POST['btn_delete']))
     {
         foreach($_POST['chk_delete'] as $value)
         {
+            $insert_query = mysqli_query($con,"INSERT into tblservices2 SELECT * from tblservices WHERE id ='$value' ") or die('Error: ' . mysqli_error($con));
+   
             $delete_query = mysqli_query($con,"DELETE from tblservices where id = '$value' ") or die('Error: ' . mysqli_error($con));
                     
             if($delete_query == true)
@@ -80,7 +82,35 @@ if(isset($_POST['btn_delete']))
                 $_SESSION['delete'] = 1;
                 header("location: ".$_SERVER['REQUEST_URI']);
             }
+            else{
+                $delete_query = mysqli_query($con,"DELETE from tblservices2 where id = '$value' ") or die('Error: ' . mysqli_error($con));  
+            }
         }
+    }
+}
+
+if(isset($_POST['btn_recover']))
+{
+
+    $value = $_POST['rowid'] ;
+
+    echo'
+        <script>
+            console.log("recover here --",'.$value.')
+        </script>
+    ';
+    $insert_query = mysqli_query($con,"INSERT into tblservices SELECT * from tblservices2 WHERE id ='$value' ") or die('Error: ' . mysqli_error($con));
+    
+    // $select_query = mysqli_query($con,"SELECT * from tblresident where id = '$value' ") or die('Error: ' . mysqli_error($con));   
+    $delete_query = mysqli_query($con,"DELETE from tblservices2 where id = '$value' ") or die('Error: ' . mysqli_error($con));
+            
+    if($delete_query == true)
+    {
+        
+        $_SESSION['delete'] = 1;
+        // header("location: ".$_SERVER['REQUEST_URI']);
+    }else{
+        $delete_query = mysqli_query($con,"DELETE from tblservices where id = '$value' ") or die('Error: ' . mysqli_error($con));
     }
 }
 

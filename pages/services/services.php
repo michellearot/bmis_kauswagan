@@ -60,93 +60,203 @@
                                     </div>                                
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
-                                <form method="post">
-                                    <table id="table" class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <?php 
-                                                if((!isset($_SESSION['staff'])) && (!isset($_SESSION['resident'])))
-                                                {
-                                                ?>
-                                                <th style="width: 20px !important;"><input type="checkbox" name="chk_delete[]" class="cbxMain" onchange="checkMain(this)"/></th>
+
+                                <ul class="nav nav-tabs" id="myTab">
+                                      <li class="active"><a data-target="#approved" data-toggle="tab">Active</a></li>
+                                      <li><a data-target="#disapproved" data-toggle="tab">deleted</a></li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div id="approved" class="tab-pane active in">
+
+                                        <form method="post">
+                                        <table id="table" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <?php 
+                                                    if((!isset($_SESSION['staff'])) && (!isset($_SESSION['resident'])))
+                                                    {
+                                                    ?>
+                                                    <th style="width: 20px !important;">
+                                                        <!-- <input type="checkbox" name="chk_delete[]" class="cbxMain" onchange="checkMain(this)"/> -->
+                                                    </th>
+                                                    <?php
+                                                        }
+                                                    ?>
+                                                    <th>Date Recorded</th>
+                                                    <th>Items and Services</th>
+                                                    <th>Purpose</th>
+                                                    <th style="width: 140px !important;">Option</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
                                                 <?php
+                                                if($_SESSION['role'] == "Administrator")
+                                                {   
+
+                                                    $squery = mysqli_query($con, "select * from tblservices");
+                                                    while($row = mysqli_fetch_array($squery))
+                                                    {
+                                                        echo '
+                                                        <tr>
+                                                            <td><input type="radio" name="chk_delete[]" class="chk_delete" value="'.$row['id'].'" /></td>
+                                                            <td>'.$row['daterecorded'].'</td>
+                                                            <td>'.$row['services'].'</td>
+                                                            <td>'.$row['purpose'].'</td>
+                                                            <td>
+                                                                <button class="btn btn-primary btn-sm" data-target="#editModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+                                                                <button class="btn btn-primary btn-sm" data-target="#viewModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i> Photo</button>
+                                                            </td>
+                                                        </tr>
+                                                        ';
+
+                                                        include "edit_modal.php";
+                                                        include "view_modal.php";
                                                     }
+
+                                                }
+                                                elseif(isset($_SESSION['resident'])){
+                                                    $squery = mysqli_query($con, "select * from tblservices");
+                                                    while($row = mysqli_fetch_array($squery))
+                                                    {
+                                                        echo '
+                                                        <tr>
+                                                            <td>'.$row['daterecorded'].'</td>
+                                                            <td>'.$row['services'].'</td>
+                                                            <td>'.$row['purpose'].'</td>
+                                                            <td><button class="btn btn-primary btn-sm" data-target="#viewModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i> Photo</button></td>
+                                                        </tr>
+                                                        ';
+
+                                                        include "view_modal.php";
+                                                    }
+                                                }
+                                                else{
+                                                    $squery = mysqli_query($con, "select * from tblservices");
+                                                    while($row = mysqli_fetch_array($squery))
+                                                    {
+                                                        echo '
+                                                        <tr>
+                                                            <td>'.$row['daterecorded'].'</td>
+                                                            <td>'.$row['services'].'</td>
+                                                            <td>'.$row['purpose'].'</td>
+                                                            <td>
+                                                                <button class="btn btn-primary btn-sm" data-target="#editModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+                                                                <button class="btn btn-primary btn-sm" data-target="#viewModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i> Photo</button>
+                                                            </td>
+                                                        </tr>
+                                                        ';
+
+                                                        include "edit_modal.php";
+                                                        include "view_modal.php";
+                                                    }
+                                                }
                                                 ?>
-                                                <th>Date Recorded</th>
-                                                <th>Items and Services</th>
-                                                <th>Purpose</th>
-                                                <th style="width: 140px !important;">Option</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            if($_SESSION['role'] == "Administrator")
-                                            {   
+                                            </tbody>
+                                        </table>
 
-                                                $squery = mysqli_query($con, "select * from tblservices");
-                                                while($row = mysqli_fetch_array($squery))
-                                                {
-                                                    echo '
-                                                    <tr>
-                                                        <td><input type="checkbox" name="chk_delete[]" class="chk_delete" value="'.$row['id'].'" /></td>
-                                                        <td>'.$row['daterecorded'].'</td>
-                                                        <td>'.$row['services'].'</td>
-                                                        <td>'.$row['purpose'].'</td>
-                                                        <td>
-                                                            <button class="btn btn-primary btn-sm" data-target="#editModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
-                                                            <button class="btn btn-primary btn-sm" data-target="#viewModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i> Photo</button>
-                                                        </td>
-                                                    </tr>
-                                                    ';
+                                        <?php include "../deleteModal.php"; ?>
 
-                                                    include "edit_modal.php";
-                                                    include "view_modal.php";
+                                        </form>
+                                    </div>
+
+                                    <div id="disapproved" class="tab-pane">
+                                    <form method="post">
+                                        <table id="table" class="table table-bordered table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <?php 
+                                                    if((!isset($_SESSION['staff'])) && (!isset($_SESSION['resident'])))
+                                                    {
+                                                    ?>
+                                                    <th style="width: 20px !important;">
+                                                        <!-- <input type="checkbox" name="chk_delete[]" class="cbxMain" onchange="checkMain(this)"/> -->
+                                                    </th>
+                                                    <?php
+                                                        }
+                                                    ?>
+                                                    <th>Date Recorded</th>
+                                                    <th>Items and Services</th>
+                                                    <th>Purpose</th>
+                                                    <th style="width: 140px !important;">Option</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                if($_SESSION['role'] == "Administrator")
+                                                {   
+
+                                                    $squery = mysqli_query($con, "select * from tblservices2");
+                                                    while($row = mysqli_fetch_array($squery))
+                                                    {
+                                                        echo '
+                                                        <tr>
+                                                            <td>
+                                                                <textarea style="display:none" name="rowid" value ="'.$row['id'].'"> '.$row['id'].'  </textarea>
+                                                                <input type="radio" name="chk_delete[]" class="chk_delete" value="'.$row['id'].'" />
+                                                            </td>
+                                                            <td>'.$row['daterecorded'].'</td>
+                                                            <td>'.$row['services'].'</td>
+                                                            <td>'.$row['purpose'].'</td>
+                                                            <td>
+                                                                <input type="submit" name="btn_recover"
+                                                                        value="Recover"/>
+                                                            </td>
+                                                        </tr>
+                                                        ';
+
+                                                        include "edit_modal.php";
+                                                        include "view_modal.php";
+                                                    }
+
                                                 }
+                                                elseif(isset($_SESSION['resident'])){
+                                                    $squery = mysqli_query($con, "select * from tblservices2");
+                                                    while($row = mysqli_fetch_array($squery))
+                                                    {
+                                                        echo '
+                                                        <tr>
+                                                            <td>'.$row['daterecorded'].'</td>
+                                                            <td>'.$row['services'].'</td>
+                                                            <td>'.$row['purpose'].'</td>
+                                                            <td><button class="btn btn-primary btn-sm" data-target="#viewModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i> Photo</button></td>
+                                                        </tr>
+                                                        ';
 
-                                            }
-                                            elseif(isset($_SESSION['resident'])){
-                                                $squery = mysqli_query($con, "select * from tblservices");
-                                                while($row = mysqli_fetch_array($squery))
-                                                {
-                                                    echo '
-                                                    <tr>
-                                                        <td>'.$row['daterecorded'].'</td>
-                                                        <td>'.$row['services'].'</td>
-                                                        <td>'.$row['purpose'].'</td>
-                                                        <td><button class="btn btn-primary btn-sm" data-target="#viewModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i> Photo</button></td>
-                                                    </tr>
-                                                    ';
-
-                                                    include "view_modal.php";
+                                                        include "view_modal.php";
+                                                    }
                                                 }
-                                            }
-                                            else{
-                                                $squery = mysqli_query($con, "select * from tblservices");
-                                                while($row = mysqli_fetch_array($squery))
-                                                {
-                                                    echo '
-                                                    <tr>
-                                                        <td>'.$row['daterecorded'].'</td>
-                                                        <td>'.$row['services'].'</td>
-                                                        <td>'.$row['purpose'].'</td>
-                                                        <td>
-                                                            <button class="btn btn-primary btn-sm" data-target="#editModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
-                                                            <button class="btn btn-primary btn-sm" data-target="#viewModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i> Photo</button>
-                                                        </td>
-                                                    </tr>
-                                                    ';
+                                                else{
+                                                    $squery = mysqli_query($con, "select * from tblservices2");
+                                                    while($row = mysqli_fetch_array($squery))
+                                                    {
+                                                        echo '
+                                                        <tr>
+                                                            <td>'.$row['daterecorded'].'</td>
+                                                            <td>'.$row['services'].'</td>
+                                                            <td>'.$row['purpose'].'</td>
+                                                            <td>
+                                                                <button class="btn btn-primary btn-sm" data-target="#editModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+                                                                <button class="btn btn-primary btn-sm" data-target="#viewModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i> Photo</button>
+                                                            </td>
+                                                        </tr>
+                                                        ';
 
-                                                    include "edit_modal.php";
-                                                    include "view_modal.php";
+                                                        include "edit_modal.php";
+                                                        include "view_modal.php";
+                                                    }
                                                 }
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
+                                                ?>
+                                            </tbody>
+                                        </table>
 
-                                    <?php include "../deleteModal.php"; ?>
+                                        <?php include "../deleteModal.php"; ?>
 
-                                    </form>
+                                        </form>
+
+                                    </div>
+                                </div>
+                                
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
 

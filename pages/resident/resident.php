@@ -223,7 +223,7 @@
                                                         }
                                                     }
                                                     else{
-                                                        $squery = mysqli_query($con, "SELECT zone,id,CONCAT(lname, ', ', fname, ' ', mname) as cname, age, gender, formerAddress, image FROM tblresident order by zone");
+                                                        $squery = mysqli_query($con, "SELECT zone,id,CONCAT(lname, ', ', fname, ' ', mname) as cname, age, gender, formerAddress, image FROM tblresident2 order by zone");
                                                         while($row = mysqli_fetch_array($squery))
                                                         {
                                                             echo '

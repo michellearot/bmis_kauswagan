@@ -49,41 +49,99 @@
                                     </div>                                
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
-                                <form method="post">
-                                    <table id="table" class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th style="width: 20px !important;"></th>
-                                                <th>Name</th>
-                                                <th>Username</th>
-                                                <th>Role</th>
-                                                <th style="width: 40px !important;">Option</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            $squery = mysqli_query($con, "select * from tblstaff");
-                                            while($row = mysqli_fetch_array($squery))
-                                            {
-                                                echo '
+
+
+                                <ul class="nav nav-tabs" id="myTab">
+                                      <li class="active"><a data-target="#approved" data-toggle="tab">Active</a></li>
+                                      <li><a data-target="#disapproved" data-toggle="tab">deleted</a></li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div id="approved" class="tab-pane active in">
+                                        <form method="post">
+                                        <table id="table" class="table table-bordered table-striped">
+                                            <thead>
                                                 <tr>
-                                                    <td><input type="radio" name="chk_delete[]" class="chk_delete" value="'.$row['id'].'" /></td>
-                                                    <td>'.$row['name'].'</td>
-                                                    <td>'.$row['username'].'</td>
-                                                    <td>'.$row['role'].'</td>
-                                                    <td><button class="btn btn-primary btn-sm" data-target="#editModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></td>
+                                                    <th style="width: 20px !important;"></th>
+                                                    <th>Name</th>
+                                                    <th>Username</th>
+                                                    <th>Role</th>
+                                                    <th style="width: 40px !important;">Option</th>
                                                 </tr>
-                                                ';
+                                            </thead>
+                                            <tbody>
+                                                <?php
+                                                $squery = mysqli_query($con, "select * from tblstaff");
+                                                while($row = mysqli_fetch_array($squery))
+                                                {
+                                                    echo '
+                                                    <tr>
+                                                        <td><input type="radio" name="chk_delete[]" class="chk_delete" value="'.$row['id'].'" /></td>
+                                                        <td>'.$row['name'].'</td>
+                                                        <td>'.$row['username'].'</td>
+                                                        <td>'.$row['role'].'</td>
+                                                        <td><button class="btn btn-primary btn-sm" data-target="#editModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></td>
+                                                    </tr>
+                                                    ';
 
-                                                include "edit_modal.php";
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
+                                                    include "edit_modal.php";
+                                                }
+                                                ?>
+                                            </tbody>
+                                        </table>
 
-                                    <?php include "../deleteModal.php"; ?>
+                                        <?php include "../deleteModal.php"; ?>
 
-                                    </form>
+                                        </form>
+
+                                    </div>
+
+                                    <div id="disapproved" class="tab-pane">
+
+                                        <form method="post">
+                                            <table id="table" class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="width: 20px !important;"></th>
+                                                        <th>Name</th>
+                                                        <th>Username</th>
+                                                        <th>Role</th>
+                                                        <th style="width: 40px !important;">Option</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    $squery = mysqli_query($con, "select * from tblstaff2");
+                                                    while($row = mysqli_fetch_array($squery))
+                                                    {
+                                                        echo '
+                                                        <tr>
+                                                            <td>
+                                                                <textarea style="display:none" name="rowid" value ="'.$row['id'].'"> '.$row['id'].'  </textarea>
+                                                                <input type="radio" name="chk_delete[]" class="chk_delete" value="'.$row['id'].'" />
+                                                            </td>
+                                                            <td>'.$row['name'].'</td>
+                                                            <td>'.$row['username'].'</td>
+                                                            <td>'.$row['role'].'</td>
+                                                            <td>
+                                                                <input type="submit" name="btn_recover"
+                                                                        value="Recover"/>
+                                                            </td>
+                                                        </tr>
+                                                        ';
+
+                                                        include "edit_modal.php";
+                                                    }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+
+                                            <?php include "../deleteModal.php"; ?>
+
+                                            </form>
+                                    </div>
+                                </div>
+                                
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
 
