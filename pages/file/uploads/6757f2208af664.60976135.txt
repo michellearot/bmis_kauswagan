@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html>
+
+<?php
+session_start();
+if (!isset($_SESSION['role'])) {
+    header("Location: ../../login.php");
+    exit();
+} else 
+    ob_start();
+    include('../head_css.php');
+?>
+    <body class="skin-black">
+        <?php
+        include "../connection.php";
+        ?>
+        <?php include('../header.php'); ?>
+
+        <div class="wrapper row-offcanvas row-offcanvas-left">
+            <?php include('../sidebar-left.php'); ?>
+
+            <aside class="right-side">
+                <section class="content-header">
+                    <h1>File Upload</h1>
+                </section>
+
+                <section class="content">
+                    <div class="row">
+                        <div class="box">
+                            <div class="col-md-12">
+                                <div class="box box-primary">
+                                    <div class="box-header">
+                                        <h3 class="box-title">Manage Files</h3>
+                                    </div>
+                                    <div class="box-body">
+                                        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#uploadFileModal">
+                                            <i class="fa fa-user-plus"></i> Add File
+                                        </button>
+
+                                        <button type="button" id="deleteSelectedFiles" class="btn btn-danger">
+                                            <i class="fa fa-trash-o"></i> Delete Selected
+                                        </button>
+
+                                        <div class="form-group pull-right" style="width: 300px;">
+                                            <input type="text" id="searchInput" class="form-control" placeholder="Search by description" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Modal for File Upload -->
+                            <div id="uploadFileModal" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                            <h4 class="modal-title">Upload File</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form action="file.php" method="post" enctype="multipart/form-data">
+                                                <div class="form-group">
+                                                    <label for="file">Choose File</label>
+                                                    <input type="file" name="file" id="file" class="form-control" required />
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label for="file_description">Description</label>
+                                                    <input type="text" name="file_description" class="form-control" placeholder="File Description" required />
+                                                </div>
+
+                                                <button type="submit" name="upload_file" class="btn btn-primary">Upload File</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="box">
+                        <div class="box-header">
+                            <h3 class="box-title">Uploaded Files</h3>
+                        </div>
+                        <div class="box-body">
+                            <table class="table table-bordered table-striped" id="file_table">
+                                <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="selectAll" /> Select All</th>
+                                        <th>Original Filename</th>
+                                        <th>Description</th>
+                                        <th>Upload Date</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="fileTableBody">
+                                    <?php
+                                    $query = mysqli_query($con, "SELECT * FROM tblfiles ORDER BY upload_date DESC");
+                                    while ($row = mysqli_fetch_assoc($query)) {
+                                        echo '<tr>';
+                                        echo '<td><input type="checkbox" class="fileCheckbox" value="' . $row['id'] . '" /></td>';
+                                        echo '<td><a href="uploads/' . $row['filename'] . '" target="_blank">' . $row['original_filename'] . '</a></td>';
+                                        echo '<td>' . $row['description'] . '</td>';
+                                        echo '<td>' . $row['upload_date'] . '</td>';
+                                        echo '<td>';
+                                        echo '<button class="btn btn-info btn-sm editFile" data-id="' . $row['id'] . '"><i class="fa fa-pencil"></i> Edit</button>';
+                                        echo ' <button class="btn btn-danger btn-sm deleteFile" data-id="' . $row['id'] . '"><i class="fa fa-trash-o"></i> Delete</button>';
+                                        echo '</td>';
+                                        echo '</tr>';
+                                    }
+                                    ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                </section>
+            </aside>
+        </div>
+
+        <?php include "../footer.php"; ?>
+
+        <!-- Include jQuery and Bootstrap JS for Modal functionality -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $("#file_table").dataTable();
+
+                $('#selectAll').on('click', function() {
+                    var isChecked = this.checked;
+                    $('.fileCheckbox').each(function() {
+                        this.checked = isChecked;
+                    });
+                });
+
+                $('.deleteFile').on('click', function() {
+                    var fileId = $(this).data('id');
+                    if (confirm('Are you sure you want to delete this file?')) {
+                        $.ajax({
+                            url: 'file.php',
+                            type: 'GET',
+                            data: { delete_id: fileId },
+                            success: function(response) {
+                                alert(response);
+                                if (response.includes('successfully')) {
+                                    $('button[data-id="' + fileId + '"]').closest('tr').remove();
+                                }
+                            },
+                            error: function() {
+                                alert('Error deleting the file.');
+                            }
+                        });
+                    }
+                });
+
+                $('#deleteSelectedFiles').on('click', function() {
+                    var selectedFiles = [];
+                    $('.fileCheckbox:checked').each(function() {
+                        selectedFiles.push($(this).val());
+                    });
+
+                    if (selectedFiles.length > 0 && confirm('Are you sure you want to delete the selected files?')) {
+                        $.ajax({
+                            url: 'file.php',
+                            type: 'GET',
+                            data: { delete_ids: selectedFiles.join(',') },
+                            success: function(response) {
+                                alert(response);
+                                if (response.includes('successfully')) {
+                                    selectedFiles.forEach(function(fileId) {
+                                        $('input[value="' + fileId + '"]').closest('tr').remove();
+                                    });
+                                }
+                            },
+                            error: function() {
+                                alert('Error deleting the selected files.');
+                            }
+                        });
+                    } else {
+                        alert('No files selected for deletion.');
+                    }
+                });
+
+                $('.editFile').on('click', function() {
+                    var fileId = $(this).data('id');
+                    var currentDescription = $(this).closest('tr').find('td:nth-child(3)').text();
+                    var newDescription = prompt("Edit the file description:", currentDescription);
+
+                    if (newDescription !== null && newDescription.trim() !== '') {
+                        $.ajax({
+                            url: 'file.php',
+                            type: 'POST',
+                            data: {
+                                edit_file: true,
+                                file_id: fileId,
+                                new_description: newDescription
+                            },
+                            success: function(response) {
+                                alert(response);
+                                if (response.includes('successfully')) {
+                                    $('button[data-id="' + fileId + '"]').closest('tr').find('td:nth-child(3)').text(newDescription);
+                                }
+                            },
+                            error: function() {
+                                alert('Error updating the file.');
+                            }
+                        });
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>
