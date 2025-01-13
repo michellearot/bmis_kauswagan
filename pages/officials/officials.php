@@ -47,87 +47,183 @@ if (!isset($_SESSION['role'])) {
                                 </div>
                             </div><!-- /.box-header -->
                             <div class="box-body table-responsive">
-                                <form method="post">
-                                    <table id="table" class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <?php if (!isset($_SESSION['staff'])) { ?>
-                                                    <th style="width: 20px !important;">
-                                                        <input type="checkbox" name="chk_delete[]" class="cbxMain" onchange="checkMain(this)" />
-                                                    </th>
-                                                <?php } ?>
-                                                <th>Position</th>
-                                                <th>Name</th>
-                                                <th>Contact</th>
-                                                <th>Address</th>
-                                                <th>Start of Term</th>
-                                                <th>End of Term</th>
-                                                <th>Status</th>
-                                                <th style="width: 130px !important;">Option</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            if (!isset($_SESSION['staff'])) {
-                                                $squery = mysqli_query($con, "SELECT * FROM tblofficial");
-                                                while ($row = mysqli_fetch_array($squery)) {
-                                                    echo '
-                                                    <tr>
-                                                        <td>
-                                                            <input type="checkbox" name="chk_delete[]" class="chk_delete" value="' . $row['id'] . '" />
-                                                        </td>
-                                                        <td>' . $row['sPosition'] . '</td>
-                                                        <td>' . $row['completeName'] . '</td>
-                                                        <td>' . $row['pcontact'] . '</td>
-                                                        <td>' . $row['paddress'] . '</td>
-                                                        <td>' . $row['termStart'] . '</td>
-                                                        <td>' . $row['termEnd'] . '</td>
-                                                        <td>
-                                                            <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; background-color: ' . ($row['status'] == 'Ongoing Term' ? 'green' : 'red') . ';"></span>
-                                                            ' . ($row['status'] == 'Ongoing Term' ? 'Current Official' : 'Former Official') . '
-                                                        </td>
-                                                        <td style="text-align: center;">
-                                                            ' . ($row['status'] == 'Ongoing Term' ? 
-                                                                '<button class="btn btn-danger btn-sm" data-target="#endModal' . $row['id'] . '" data-toggle="modal">
-                                                                    <i class="fa fa-minus-circle" aria-hidden="true"></i> End
-                                                                </button>' : 
-                                                                '<span class="label label-default" style="font-size: 12px;">Ended</span>') . '
-                                                        </td>
-                                                    </tr>';
-                                                    include "edit_modal.php";
-                                                    include "endterm_modal.php";
-                                                }
-                                            } else {
-                                                $squery = mysqli_query($con, "SELECT * FROM tblofficial WHERE status = 'Ongoing Term' GROUP BY termend");
-                                                while ($row = mysqli_fetch_array($squery)) {
-                                                    echo '
-                                                    <tr>
-                                                        <td>' . $row['sPosition'] . '</td>
-                                                        <td>' . $row['completeName'] . '</td>
-                                                        <td>' . $row['pcontact'] . '</td>
-                                                        <td>' . $row['paddress'] . '</td>
-                                                        <td>' . $row['termStart'] . '</td>
-                                                        <td>' . $row['termEnd'] . '</td>
-                                                        <td>
-                                                            <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; background-color: green;"></span>
-                                                            Current Official
-                                                        </td>
-                                                        <td style="text-align: center;">
-                                                            <button class="btn btn-primary btn-sm" data-target="#editModal' . $row['id'] . '" data-toggle="modal">
-                                                                <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
-                                                            </button>
-                                                        </td>
-                                                    </tr>';
-                                                    include "edit_modal.php";
-                                                }
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
 
-                                    <?php include "../deleteModal.php"; ?>
+                                <ul class="nav nav-tabs" id="myTab">
+                                    <li class="active"><a data-target="#approved" data-toggle="tab">Active</a></li>
+                                    <li><a data-target="#disapproved" data-toggle="tab">deleted</a></li>
+                                </ul>
 
-                                </form>
+                                <div class="tab-content">
+                                    <div id="approved" class="tab-pane active in">
+
+                                        <form method="post">
+                                            <table id="table" class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <?php if (!isset($_SESSION['staff'])) { ?>
+                                                            <th style="width: 20px !important;">
+                                                                <!-- <input type="radio" name="chk_delete[]" class="cbxMain" onchange="checkMain(this)" /> -->
+                                                            </th>
+                                                        <?php } ?>
+                                                        <th>Name</th>
+                                                        <th>Position</th>
+                                                        <th>Contact</th>
+                                                        <th>Address</th>
+                                                        <th>Start of Term</th>
+                                                        <th>End of Term</th>
+                                                        <th>Status</th>
+                                                        <th style="width: 130px !important;">Option</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    if (!isset($_SESSION['staff'])) {
+                                                        $squery = mysqli_query($con, "SELECT * FROM tblofficial");
+                                                        while ($row = mysqli_fetch_array($squery)) {
+                                                            echo '
+                                                            <tr>
+                                                                <td>
+                                                                    <input type="radio" name="chk_delete[]" class="chk_delete" value="' . $row['id'] . '" />
+                                                                </td>
+                                                                <td>' .  $row['completeName'] . '</td>
+                                                                <td>' . $row['sPosition']. '</td>
+                                                                <td>' . $row['pcontact'] . '</td>
+                                                                <td>' . $row['paddress'] . '</td>
+                                                                <td>' . $row['termStart'] . '</td>
+                                                                <td>' . $row['termEnd'] . '</td>
+                                                                <td>
+                                                                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; background-color: ' . ($row['status'] == 'Ongoing Term' ? 'green' : 'red') . ';"></span>
+                                                                    ' . ($row['status'] == 'Ongoing Term' ? 'Current Official' : 'Former Official') . '
+                                                                </td>
+                                                                <td style="text-align: center;">
+                                                                    ' . ($row['status'] == 'Ongoing Term' ? 
+                                                                        '<button class="btn btn-danger btn-sm" data-target="#endModal' . $row['id'] . '" data-toggle="modal">
+                                                                            <i class="fa fa-minus-circle" aria-hidden="true"></i> End
+                                                                        </button>' : 
+                                                                        '<span class="label label-default" style="font-size: 12px;">Ended</span>') . '
+                                                                </td>
+                                                            </tr>';
+                                                            include "edit_modal.php";
+                                                            include "endterm_modal.php";
+                                                        }
+                                                    } else {
+                                                        $squery = mysqli_query($con, "SELECT * FROM tblofficial WHERE status = 'Ongoing Term' GROUP BY termend");
+                                                        while ($row = mysqli_fetch_array($squery)) {
+                                                            echo '
+                                                            <tr>
+                                                                <td>' . $row['completeName'] . '</td>
+                                                                <td>' . $row['sPosition']  . '</td>
+                                                                <td>' . $row['pcontact'] . '</td>
+                                                                <td>' . $row['paddress'] . '</td>
+                                                                <td>' . $row['termStart'] . '</td>
+                                                                <td>' . $row['termEnd'] . '</td>
+                                                                <td>
+                                                                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; background-color: green;"></span>
+                                                                    Current Official
+                                                                </td>
+                                                                <td style="text-align: center;">
+                                                                    <button class="btn btn-primary btn-sm" data-target="#editModal' . $row['id'] . '" data-toggle="modal">
+                                                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                                                                    </button>
+                                                                </td>
+                                                            </tr>';
+                                                            include "edit_modal.php";
+                                                        }
+                                                    }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+
+                                            <?php include "../deleteModal.php"; ?>
+
+                                            </form>
+                                    </div>
+
+                                    <div id="disapproved" class="tab-pane">
+                                    <form method="post">
+                                            <table id="table" class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <?php if (!isset($_SESSION['staff'])) { ?>
+                                                            <th style="width: 20px !important;">
+                                                                <!-- <input type="radio" name="chk_delete[]" class="cbxMain" onchange="checkMain(this)" /> -->
+                                                            </th>
+                                                        <?php } ?>
+                                                        <th>Name</th>
+                                                        <th>Position</th>
+                                                        <th>Contact</th>
+                                                        <th>Address</th>
+                                                        <th>Start of Term</th>
+                                                        <th>End of Term</th>
+                                                        <th>Status</th>
+                                                        <th style="width: 130px !important;">Option</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    if (!isset($_SESSION['staff'])) {
+                                                        $squery = mysqli_query($con, "SELECT * FROM tblofficial2");
+                                                        while ($row = mysqli_fetch_array($squery)) {
+                                                            echo '
+                                                            <tr>
+                                                                <td>
+                                                                    <textarea style="display:none" name="rowid" value ="'.$row['id'].'"> '.$row['id'].'  </textarea>
+                                                                    <!-- <input type="radio" name="chk_delete[]" class="chk_delete" value="' . $row['id'] . '" />-->
+                                                                </td>
+                                                                <td>' .  $row['completeName'] . '</td>
+                                                                <td>' . $row['sPosition']. '</td>
+                                                                <td>' . $row['pcontact'] . '</td>
+                                                                <td>' . $row['paddress'] . '</td>
+                                                                <td>' . $row['termStart'] . '</td>
+                                                                <td>' . $row['termEnd'] . '</td>
+                                                                <td>
+                                                                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; background-color: ' . ($row['status'] == 'Ongoing Term' ? 'green' : 'red') . ';"></span>
+                                                                    ' . ($row['status'] == 'Ongoing Term' ? 'Current Official' : 'Former Official') . '
+                                                                </td>
+                                                                <td style="text-align: center;">
+                                                                <input type="submit" name="btn_recover"
+                                                                value="Recover"/>
+                                                                </td>
+                                                            </tr>';
+                                                            include "edit_modal.php";
+                                                            include "endterm_modal.php";
+                                                        }
+                                                    } else {
+                                                        $squery = mysqli_query($con, "SELECT * FROM tblofficial2 WHERE status = 'Ongoing Term' GROUP BY termend");
+                                                        while ($row = mysqli_fetch_array($squery)) {
+                                                            echo '
+                                                            <tr>
+                                                                <td>' . $row['completeName'] . '</td>
+                                                                <td>' . $row['sPosition']  . '</td>
+                                                                <td>' . $row['pcontact'] . '</td>
+                                                                <td>' . $row['paddress'] . '</td>
+                                                                <td>' . $row['termStart'] . '</td>
+                                                                <td>' . $row['termEnd'] . '</td>
+                                                                <td>
+                                                                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; background-color: green;"></span>
+                                                                    Current Official
+                                                                </td>
+                                                                <td style="text-align: center;">
+                                                                    <button class="btn btn-primary btn-sm" data-target="#editModal' . $row['id'] . '" data-toggle="modal">
+                                                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
+                                                                    </button>
+                                                                </td>
+                                                            </tr>';
+                                                            include "edit_modal.php";
+                                                        }
+                                                    }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+
+                                            <?php include "../deleteModal.php"; ?>
+
+                                            </form>
+                                    </div>
+                                </div>
+
+
+                                
                             </div><!-- /.box-body -->
                         </div><!-- /.box -->
 

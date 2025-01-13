@@ -85,9 +85,10 @@ if (isset($_POST['btn_delete'])) {
             $file = mysqli_fetch_assoc($file_query)['filename'];
 
             // Delete the file from the server
-            unlink("uploads/" . $file);
+            // unlink("uploads/" . $file);
 
             // Delete the file record from the database
+            $insert_query = mysqli_query($con,"INSERT into tblfiles2 SELECT * from tblfiles WHERE id ='$file_id' ") or die('Error: ' . mysqli_error($con));
             mysqli_query($con, "DELETE FROM tblfiles WHERE id='$file_id'");
 
             // Log the action
@@ -95,9 +96,43 @@ if (isset($_POST['btn_delete'])) {
                 $action = 'Deleted File: ' . $file;
                 mysqli_query($con, "INSERT INTO tbllogs (user, logdate, action) VALUES ('" . $_SESSION['role'] . "', NOW(), '$action')");
             }
+            
         }
         $_SESSION['delete'] = 1;
+
     }
     header("location: " . $_SERVER['REQUEST_URI']);
 }
+
+
+if(isset($_POST['btn_recover']))
+{
+
+    $value = $_POST['rowid'] ;
+
+    echo'
+        <script>
+            console.log("recover here --")
+        </script>
+    ';
+    $insert_query = mysqli_query($con,"INSERT into tblfiles SELECT * from tblfiles2 WHERE id ='$value' ") or die('Error: ' . mysqli_error($con));
+    
+    // $select_query = mysqli_query($con,"SELECT * from tblresident where id = '$value' ") or die('Error: ' . mysqli_error($con));   
+    $delete_query = mysqli_query($con,"DELETE from tblfiles2 where id = '$value' ") or die('Error: ' . mysqli_error($con));
+            
+    if($delete_query == true)
+    {
+        
+        $_SESSION['delete'] = 1;
+        // header("location: ".$_SERVER['REQUEST_URI']);
+    }else{
+        $delete_query = mysqli_query($con,"DELETE from tblfiles where id = '$value' ") or die('Error: ' . mysqli_error($con));
+    }
+}
+
 ?>
+
+
+
+
+

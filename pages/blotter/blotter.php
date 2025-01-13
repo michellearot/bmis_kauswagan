@@ -54,78 +54,181 @@
                                     </div>                                
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
-                                <form method="post">
-                                    <table id="table" class="table table-bordered table-striped">
-                                        <thead>
-                                            <tr>
-                                                <?php 
-                                                if(!isset($_SESSION['staff']))
-                                                {
-                                                ?>
-                                                <th style="width: 20px !important;"><input type="checkbox" name="chk_delete[]" class="cbxMain" onchange="checkMain(this)"/></th>
-                                                <?php
+
+                                <ul class="nav nav-tabs" id="myTab">
+                                    <li class="active"><a data-target="#approved" data-toggle="tab">Active</a></li>
+                                    <li><a data-target="#disapproved" data-toggle="tab">deleted</a></li>
+                                </ul>
+
+                                <div class="tab-content">
+                                    <div id="approved" class="tab-pane active in">
+                                        <form method="post">
+                                            <table id="table" class="table table-bordered table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <?php 
+                                                        if(!isset($_SESSION['staff']))
+                                                        {
+                                                        ?>
+                                                        <th style="width: 20px !important;">
+                                                            <!-- <input type="checkbox" name="chk_delete[]" class="cbxMain" onchange="checkMain(this)"/> -->
+                                                        </th>
+                                                        <?php
+                                                            }
+                                                        ?>
+                                                        <th>Date Recorded</th>
+                                                        <th>Complainant</th>
+                                                        <th>Person To Complain</th>
+                                                        <th>Complaint</th>
+                                                        <!-- <th>Action Taken</th> -->
+                                                        <th>Status</th>
+                                                        <th>Location of Incidence</th>
+                                                        <th style="width: 40px !important;">Option</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    if(!isset($_SESSION['staff']))
+                                                    {
+
+                                                        $squery = mysqli_query($con, "SELECT *,r.id as rid,b.id as bid,CONCAT(r.lname,', ', r.fname, ' ', r.mname) as rname from tblblotter b left join tblresident r on b.personToComplain = r.id ") or die('Error: ' . mysqli_error($con));
+                                                        while($row = mysqli_fetch_array($squery))
+                                                        {
+                                                            echo '
+                                                            <tr>
+                                                                <td><input type="radio" name="chk_delete[]" class="chk_delete" value="'.$row['bid'].'" /></td>
+                                                                <td>'.$row['dateRecorded'].'</td>
+                                                                <td>'.$row['complainant'].'</td>
+                                                                <td>'.$row['rname'].'</td>
+                                                                <td>'.$row['complaint'].'</td>                                                   
+                                                                <td>'.$row['sStatus'].'</td>
+                                                                <td>'.$row['locationOfIncidence'].'</td>
+                                                                <td><button class="btn btn-primary btn-sm" data-target="#editModal'.$row['bid'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></td>
+                                                            </tr>
+                                                            ';
+
+                                                            include "edit_modal.php";
+                                                        }
                                                     }
-                                                ?>
-                                                <th>Date Recorded</th>
-                                                <th>Complainant</th>
-                                                <th>Person To Complain</th>
-                                                <th>Complaint</th>
-                                                <!-- <th>Action Taken</th> -->
-                                                <th>Status</th>
-                                                <th>Location of Incidence</th>
-                                                <th style="width: 40px !important;">Option</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <?php
-                                            if(!isset($_SESSION['staff']))
-                                            {
+                                                    else{
+                                                        $squery = mysqli_query($con, "SELECT *,r.id as rid,b.id as bid,CONCAT(r.lname,', ', r.fname, ' ', r.mname) as rname from tblblotter b left join tblresident r on b.personToComplain = r.id ") or die('Error: ' . mysqli_error($con));
+                                                        while($row = mysqli_fetch_array($squery))
+                                                        {
+                                                            echo '
+                                                            <tr>
+                                                                <td>'.$row['dateRecorded'].'</td>
+                                                                <td>'.$row['complainant'].'</td>
+                                                                <td>'.$row['rname'].'</td>
+                                                                <td>'.$row['complaint'].'</td>
+                                                                <td>'.$row['sStatus'].'</td>
+                                                                <td>'.$row['locationOfIncidence'].'</td>
+                                                                <td><button class="btn btn-primary btn-sm" data-target="#editModal'.$row['bid'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></td>
+                                                            </tr>
+                                                            ';
 
-                                                $squery = mysqli_query($con, "SELECT *,r.id as rid,b.id as bid,CONCAT(r.lname,', ', r.fname, ' ', r.mname) as rname from tblblotter b left join tblresident r on b.personToComplain = r.id ") or die('Error: ' . mysqli_error($con));
-                                                while($row = mysqli_fetch_array($squery))
-                                                {
-                                                    echo '
+                                                            include "edit_modal.php";
+                                                        }
+                                                    }
+                                                    ?>
+                                                </tbody>
+                                            </table>
+
+                                            <?php include "../deleteModal.php"; ?>
+
+                                        </form>
+                                    </div>
+
+                                    <div id="disapproved" class="tab-pane">
+                                    <form method="post">
+                                            <table id="table" class="table table-bordered table-striped">
+                                                <thead>
                                                     <tr>
-                                                        <td><input type="checkbox" name="chk_delete[]" class="chk_delete" value="'.$row['bid'].'" /></td>
-                                                        <td>'.$row['dateRecorded'].'</td>
-                                                        <td>'.$row['complainant'].'</td>
-                                                        <td>'.$row['rname'].'</td>
-                                                        <td>'.$row['complaint'].'</td>                                                   
-                                                        <td>'.$row['sStatus'].'</td>
-                                                        <td>'.$row['locationOfIncidence'].'</td>
-                                                        <td><button class="btn btn-primary btn-sm" data-target="#editModal'.$row['bid'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></td>
+                                                        <?php 
+                                                        if(!isset($_SESSION['staff']))
+                                                        {
+                                                        ?>
+                                                        <th style="width: 20px !important;">
+                                                            <!-- <input type="checkbox" name="chk_delete[]" class="cbxMain" onchange="checkMain(this)"/> -->
+                                                        </th>
+                                                        <?php
+                                                            }
+                                                        ?>
+                                                        <th>Date Recorded</th>
+                                                        <th>Complainant</th>
+                                                        <th>Person To Complain</th>
+                                                        <th>Complaint</th>
+                                                        <!-- <th>Action Taken</th> -->
+                                                        <th>Status</th>
+                                                        <th>Location of Incidence</th>
+                                                        <th style="width: 40px !important;">Option</th>
                                                     </tr>
-                                                    ';
+                                                </thead>
+                                                <tbody>
+                                                    <?php
+                                                    if(!isset($_SESSION['staff']))
+                                                    {
+                                                        $squery = mysqli_query($con, "SELECT *,r.id as rid,b.id as bid,CONCAT(r.lname,', ', r.fname, ' ', r.mname) as rname from tblblotter2 b left join tblresident r on b.personToComplain = r.id ") or die('Error: ' . mysqli_error($con));
+                                                        // $squery = mysqli_query($con, "SELECT * from tblblotter2 b") or die('Error: ' . mysqli_error($con));
 
-                                                    include "edit_modal.php";
-                                                }
-                                            }
-                                            else{
-                                                $squery = mysqli_query($con, "SELECT *,r.id as rid,b.id as bid,CONCAT(r.lname,', ', r.fname, ' ', r.mname) as rname from tblblotter b left join tblresident r on b.personToComplain = r.id ") or die('Error: ' . mysqli_error($con));
-                                                while($row = mysqli_fetch_array($squery))
-                                                {
-                                                    echo '
-                                                    <tr>
-                                                        <td>'.$row['dateRecorded'].'</td>
-                                                        <td>'.$row['complainant'].'</td>
-                                                        <td>'.$row['rname'].'</td>
-                                                        <td>'.$row['complaint'].'</td>
-                                                        <td>'.$row['sStatus'].'</td>
-                                                        <td>'.$row['locationOfIncidence'].'</td>
-                                                        <td><button class="btn btn-primary btn-sm" data-target="#editModal'.$row['bid'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button></td>
-                                                    </tr>
-                                                    ';
+                                                        while($row = mysqli_fetch_array($squery))
+                                                        {
+                                                            echo '
+                                                            <form method="post">
+                                                            <script>
+                                                            console.log("---------------------------",'.$row['bid'].')
+                                                            </script>
+                                                                <tr>
+                                                                    <td>
+                                                                        <textarea style="display:none" name="rowid" value ="'.$row['bid'].'"> '.$row['bid'].'  </textarea>
+                                                                    </td>
+                                                                    <td>'.$row['dateRecorded'].'</td>
+                                                                    <td>'.$row['complainant'].'</td>
+                                                                    <td>'.$row['rname'].'</td>
+                                                                    <td>'.$row['complaint'].'</td>                                                   
+                                                                    <td>'.$row['sStatus'].'</td>
+                                                                    <td>'.$row['locationOfIncidence'].'</td>
+                                                                    <td>
+                                                                        <input  type="submit" name="btn_recover" class="btn btn-primary btn-sm" value="Recover"> 
+                                                                    </td>
+                                                                </tr>
+                                                            </form>
+                                                            ';
 
-                                                    include "edit_modal.php";
-                                                }
-                                            }
-                                            ?>
-                                        </tbody>
-                                    </table>
+                                                            include "edit_modal.php";
+                                                        }
+                                                    }
+                                                    else{
+                                                        $squery = mysqli_query($con, "SELECT *,r.id as rid,b.id as bid,CONCAT(r.lname,', ', r.fname, ' ', r.mname) as rname from tblblotter2 b left join tblresident r on b.personToComplain = r.id ") or die('Error: ' . mysqli_error($con));
+                                                        while($row = mysqli_fetch_array($squery))
+                                                        {
+                                                            echo '
+                                                            <tr>
+                                                                <td>'.$row['dateRecorded'].'</td>
+                                                                <td>'.$row['complainant'].'</td>
+                                                                <td>'.$row['rname'].'</td>
+                                                                <td>'.$row['complaint'].'</td>
+                                                                <td>'.$row['sStatus'].'</td>
+                                                                <td>'.$row['locationOfIncidence'].'</td>
+                                                                <td>
+                                                                    <input  type="submit" name="btn_recover" class="btn btn-primary btn-sm" value="Recover"> 
+                                                                </td>
+                                                            </tr>
+                                                            ';
 
-                                    <?php include "../deleteModal.php"; ?>
+                                                            include "edit_modal.php";
+                                                        }
+                                                    }
+                                                    ?>
+                                                </tbody>
+                                            </table>
 
-                                    </form>
+                                            <?php include "../deleteModal.php"; ?>
+
+                                        </form>
+
+                                    </div>
+                                </div>
+                                
                                 </div><!-- /.box-body -->
                             </div><!-- /.box -->
 

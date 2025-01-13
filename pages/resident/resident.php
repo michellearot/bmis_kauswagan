@@ -211,9 +211,9 @@
                                                                 <td>'.$row['formerAddress'].'</td>
                                                                 <td>
                                                                     
-                                                                        <input type="submit" name="btn_recover"
-                                                                                value="Recover"/>
-                                                                    
+                                                                    <input type="submit" name="btn_recover"
+                                                                            value="Recover"/>
+                                                                
                                                                 </td>
                                                                 </form>
                                                             </tr>

@@ -84,14 +84,40 @@ if (isset($_POST['btn_start'])) {
 if (isset($_POST['btn_delete'])) {
     if (isset($_POST['chk_delete'])) {
         foreach ($_POST['chk_delete'] as $value) {
+            $insert_query = mysqli_query($con,"INSERT into tblofficial2 SELECT * from tblofficial WHERE id ='$value' ") or die('Error: ' . mysqli_error($con));
             $delete_query = mysqli_query($con, "DELETE FROM tblofficial WHERE id = '$value'")
                 or die('Error: ' . mysqli_error($con));
 
             if ($delete_query) {
                 $_SESSION['delete'] = 1;
                 header("location: " . $_SERVER['REQUEST_URI']);
+            }else{
+                $delete_query = mysqli_query($con,"DELETE from tblresident2 where id = '$value' ") or die('Error: ' . mysqli_error($con));
             }
         }
     }
 }
+
+if(isset($_POST['btn_recover']))
+{
+
+    $value = $_POST['rowid'] ;
+    $insert_query = mysqli_query($con,"INSERT into tblofficial SELECT * from tblofficial2 WHERE id ='$value' ") or die('Error: ' . mysqli_error($con));
+    
+    // $select_query = mysqli_query($con,"SELECT * from tblresident where id = '$value' ") or die('Error: ' . mysqli_error($con));   
+    $delete_query = mysqli_query($con,"DELETE from tblofficial2 where id = '$value' ") or die('Error: ' . mysqli_error($con));
+            
+    if($delete_query == true)
+    {
+        
+        $_SESSION['delete'] = 1;
+        // header("location: ".$_SERVER['REQUEST_URI']);
+    }else{
+        $delete_query = mysqli_query($con,"DELETE from tblofficial where id = '$value' ") or die('Error: ' . mysqli_error($con));
+    }
+}
+
 ?>
+
+
+

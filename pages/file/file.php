@@ -33,41 +33,96 @@ if (!isset($_SESSION['role'])) {
                             </div>                                
                         </div>
                         <div class="box-body table-responsive">
-                            <form method="post">
-                                <table id="table" class="table table-bordered table-striped">
-                                    <thead>
-                                        <tr style="background-color: black; color: white;">
-                                            <th style="width: 20px !important;">
-                                                <input type="checkbox" name="chk_delete[]" class="cbxMain" onchange="checkMain(this)"/>
-                                            </th>
-                                            <th>File Name</th>
-                                            <th>Description</th>
-                                            <th>Date Uploaded</th>
-                                            <th style="width: 40px !important;">Option</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <?php
-                                        $squery = mysqli_query($con, "SELECT * FROM tblfiles");
-                                        while ($row = mysqli_fetch_array($squery)) {
-                                            echo '
-                                            <tr>
-                                                <td><input type="checkbox" name="chk_delete[]" class="chk_delete" value="'.$row['id'].'" /></td>
-                                                <td>'.$row['filename'].'</td>
-                                                <td>'.$row['description'].'</td>
-                                                <td>'.$row['upload_date'].'</td>
-                                                <td>
-                                                    <button class="btn btn-primary btn-sm" data-target="#editModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
-                                                </td>
+
+                        <ul class="nav nav-tabs" id="myTab">
+                            <li class="active"><a data-target="#approved" data-toggle="tab">Active</a></li>
+                            <li><a data-target="#disapproved" data-toggle="tab">deleted</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div id="approved" class="tab-pane active in">
+
+                                <form method="post">
+                                    <table id="table" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr style="background-color: black; color: white;">
+                                                <th style="width: 20px !important;">
+                                                    <!-- <input type="checkbox" name="chk_delete[]" class="cbxMain" onchange="checkMain(this)"/> -->
+                                                </th>
+                                                <th>File Name</th>
+                                                <th>Description</th>
+                                                <th>Date Uploaded</th>
+                                                <th style="width: 40px !important;">Option</th>
                                             </tr>
-                                            ';
-                                            include "edit_modal.php";
-                                        }
-                                        ?>
-                                    </tbody>
-                                </table>
-                                <?php include "../deleteModal.php"; ?>
-                            </form>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $squery = mysqli_query($con, "SELECT * FROM tblfiles");
+                                            while ($row = mysqli_fetch_array($squery)) {
+                                                echo '
+                                                <tr>
+                                                    <td><input type="radio" name="chk_delete[]" class="chk_delete" value="'.$row['id'].'" /></td>
+                                                    <td>'.$row['filename'].'</td>
+                                                    <td>'.$row['description'].'</td>
+                                                    <td>'.$row['upload_date'].'</td>
+                                                    <td>
+                                                        <button class="btn btn-primary btn-sm" data-target="#editModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+                                                    </td>
+                                                </tr>
+                                                ';
+                                                include "edit_modal.php";
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                    <?php include "../deleteModal.php"; ?>
+                                </form>
+                            </div>
+
+                            <div id="disapproved" class="tab-pane">
+
+                                <form method="post">
+                                    <table id="table" class="table table-bordered table-striped">
+                                        <thead>
+                                            <tr style="background-color: black; color: white;">
+                                                <th style="width: 20px !important;">
+                                                    <!-- <input type="checkbox" name="chk_delete[]" class="cbxMain" onchange="checkMain(this)"/> -->
+                                                </th>
+                                                <th>File Name</th>
+                                                <th>Description</th>
+                                                <th>Date Uploaded</th>
+                                                <th style="width: 40px !important;">Option</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <?php
+                                            $squery = mysqli_query($con, "SELECT * FROM tblfiles2");
+                                            while ($row = mysqli_fetch_array($squery)) {
+                                                echo '
+                                                <tr>
+                                                    <td>
+                                                        <textarea style="display:none" name="rowid" value ="'.$row['id'].'"> '.$row['id'].'  </textarea>
+                                                    </td>
+                                                    <td>'.$row['filename'].'</td>
+                                                    <td>'.$row['description'].'</td>
+                                                    <td>'.$row['upload_date'].'</td>
+                                                    <td>
+                                                        <input  type="submit" name="btn_recover" class="btn btn-primary btn-sm" value="Recover"> 
+                                                    </td>
+                                                </tr>
+                                                ';
+                                                include "edit_modal.php";
+                                            }
+                                            ?>
+                                        </tbody>
+                                    </table>
+                                    <?php include "../deleteModal.php"; ?>
+                                </form>
+
+
+                            </div>
+                        </div>
+                            
                         </div>
                     </div>
                     <?php include "../edit_notif.php"; ?>
