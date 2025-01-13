@@ -43,9 +43,10 @@ echo '<div id="editModal'.$row['bid'].'" class="modal fade">
                   <label class="control-label">Contact #:</label>
                 </div>  
                 <div class="col-sm-4">
-                  <input name="txt_edit_ccontact" class="form-control input-sm" type="number" value="'.$row['ccontact'].'"/>
-                </div> 
-              </div><br>
+                  <input maxlength="11" name="txt_edit_ccontact" class="form-control input-sm" value="'.$row['ccontact'].'"/>
+                </div>
+                
+              </div><br><hr>
               <div class="form-group">
                 <div class="col-sm-2" style="width:110px;">
                   <label class="control-label">Complainee:</label>
@@ -78,7 +79,7 @@ echo '<div id="editModal'.$row['bid'].'" class="modal fade">
                   <label class="control-label">Contact #:</label>
                 </div>  
                 <div class="col-sm-4">
-                  <input name="txt_edit_pcontact" class="form-control input-sm" type="number" value="'.$row['pcontact'].'"/>
+                  <input maxlength="11"  name="txt_edit_pcontact" class="form-control input-sm" value="'.$row['pcontact'].'"/>
                 </div> 
               </div><br>
               <div class="form-group">

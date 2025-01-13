@@ -118,14 +118,16 @@ if (!isset($_SESSION['role'])) {
                                                                 <td>' . $row['termStart'] . '</td>
                                                                 <td>' . $row['termEnd'] . '</td>
                                                                 <td>
-                                                                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; background-color: green;"></span>
-                                                                    Current Official
+                                                                    <span style="display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; background-color: ' . ($row['status'] == 'Ongoing Term' ? 'green' : 'red') . ';"></span>
+                                                                    ' . ($row['status'] == 'Ongoing Term' ? 'Current Official' : 'Former Official') . '
                                                                 </td>
                                                                 <td style="text-align: center;">
-                                                                    <button class="btn btn-primary btn-sm" data-target="#editModal' . $row['id'] . '" data-toggle="modal">
-                                                                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit
-                                                                    </button>
-                                                                </td>
+                                                                ' . ($row['status'] == 'Ongoing Term' ? 
+                                                                    '<button class="btn btn-danger btn-sm" data-target="#endModal' . $row['id'] . '" data-toggle="modal">
+                                                                        <i class="fa fa-minus-circle" aria-hidden="true"></i> End
+                                                                    </button>' : 
+                                                                    '<span class="label label-default" style="font-size: 12px;">Ended</span>') . '
+                                                            </td>
                                                             </tr>';
                                                             include "edit_modal.php";
                                                         }
@@ -189,7 +191,7 @@ if (!isset($_SESSION['role'])) {
                                                             include "endterm_modal.php";
                                                         }
                                                     } else {
-                                                        $squery = mysqli_query($con, "SELECT * FROM tblofficial2 WHERE status = 'Ongoing Term' GROUP BY termend");
+                                                        $squery = mysqli_query($con, "SELECT * FROM tblofficial2");
                                                         while ($row = mysqli_fetch_array($squery)) {
                                                             echo '
                                                             <tr>

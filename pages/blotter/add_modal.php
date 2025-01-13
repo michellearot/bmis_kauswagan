@@ -49,10 +49,11 @@
                                         <label class="control-label">Contact #:</label>
                                     </div>  
                                     <div class="col-sm-4" >
-                                        <input name="txt_ccontact" class="form-control input-sm" type="number" placeholder="Contact #"/>
+                                        <input maxlength="11" name="txt_ccontact" class="form-control input-sm" placeholder="Contact #"/>
                                     </div> 
 
-                                </div> 
+                                </div>
+                                <hr> 
 
                                 <div class="form-group">
                                     <div class="col-sm-2" style="width:110px;">
@@ -92,7 +93,7 @@
                                         <label class="control-label">Contact #:</label>
                                     </div>  
                                     <div class="col-sm-4" >
-                                        <input name="txt_pcontact" class="form-control input-sm" type="number" placeholder="Contact #"/>
+                                        <input maxlength="11" name="txt_pcontact" class="form-control input-sm"  placeholder="Contact #"/>
                                     </div> 
 
                                 </div> 

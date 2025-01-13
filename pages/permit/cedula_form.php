@@ -285,7 +285,7 @@
     {
         window.print();
     }
-
+    
     function Popup(data) 
     {
         var mywindow = window.open('', 'my div', 'height=400,width=600');
@@ -303,7 +303,7 @@
 
         mywindow.print();
 
-        printButton.style.visibility = 'visible';
+        printButton.style.visibility = 'visible'; 
         mywindow.close();
 
         return true;
