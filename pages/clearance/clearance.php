@@ -125,7 +125,7 @@ if ($_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Resident" || (
                                                                 <td>'.$row['Age'].'</td>
                                                                 <td>'.$row['Approved'].'</td>
                                                                 <td>
-
+                                                                    <a target="_blank" href="clearance_form.php?resident='.$row['ResidentId'].'&clearance='.$row['id'].'&val='.base64_encode($row['id'].'|'.$nameq[0].' '.$nameq[1].'|'.$row['dateCreated']).'" onclick="location.reload();" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Generate</a>
                                                                 </td>
                                                             </tr>
                                                             ';
@@ -141,7 +141,8 @@ if ($_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Resident" || (
                                                             <td>'.$row['Age'].'</td>
                                                             <td>'.$row['Approved'].'</td>
                                                             <td>
-                                                                <a target="_blank" href="clearance_form.php?resident='.$row['ResidentId'].'&clearance='.$row['id'].'&val='.base64_encode($row['id'].'|'.$nameq[0].' '.$nameq[1].'|'.$row['dateCreated']).'" onclick="location.reload();" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Generate</a></td>
+                                                                <a target="_blank" href="clearance_form.php?resident='.$row['ResidentId'].'&clearance='.$row['id'].'&val='.base64_encode($row['id'].'|'.$nameq[0].' '.$nameq[1].'|'.$row['dateCreated']).'" onclick="location.reload();" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Generate</a>
+                                                            </td>
                                                         </tr>
                                                         ';
                                                             

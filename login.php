@@ -159,6 +159,7 @@ session_start();
                 while($row = mysqli_fetch_array($user)){
 
                   if( $row['role'] == "Staff"){
+                    $_SESSION['name'] = $row['name'];
                     $_SESSION['role'] = $row['name'];
                     $_SESSION['staff'] = "Staff";
                     $_SESSION['userid'] = $row['id'];
@@ -168,7 +169,7 @@ session_start();
                     
                     header ('location: pages/officials/officials.php');
                   }else{
-
+                    $_SESSION['name'] = $row['name'];
                     $_SESSION['role'] = "Permit Admin";
                     $_SESSION['zone'] = "Zone Leader";
                     $_SESSION['userid'] = $row['id'];

@@ -11,6 +11,11 @@
     }else{
         $name = $_SESSION['role'];
     }
+
+
+    $name = $_SESSION['username'];
+
+
                             
 
    echo  '<header class="header" >

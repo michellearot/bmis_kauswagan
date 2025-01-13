@@ -107,7 +107,7 @@ if (!isset($_SESSION['role'])) {
                                                             include "endterm_modal.php";
                                                         }
                                                     } else {
-                                                        $squery = mysqli_query($con, "SELECT * FROM tblofficial WHERE status = 'Ongoing Term' GROUP BY termend");
+                                                        $squery = mysqli_query($con, "SELECT * FROM tblofficial");
                                                         while ($row = mysqli_fetch_array($squery)) {
                                                             echo '
                                                             <tr>

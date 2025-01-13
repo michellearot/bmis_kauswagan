@@ -130,6 +130,7 @@
                 
                                                                     <td>
                                                                         <button class="btn btn-primary btn-sm" data-target="#editModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+                                                                        <a target="_blank" href="cedula_form.php?resident='.$row['ResidentId'].'&cedula='.$row['id'].'" onclick="location.reload();" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Generate</a>
                                                                     </td>
                                                                 </tr>
                                                                 ';
@@ -142,7 +143,9 @@
                                                                     <td>'.$row['CivilStatus'].'</td>
                                                                     <td>'.$row['Status'].'</td>
                                                                 
-                                                                    <td><a target="_blank" href="cedula_form.php?resident='.$row['ResidentId'].'&cedula='.$row['id'].'" onclick="location.reload();" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Generate</a></td>
+                                                                    <td>
+                                                                        <a target="_blank" href="cedula_form.php?resident='.$row['ResidentId'].'&cedula='.$row['id'].'" onclick="location.reload();" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Generate</a>
+                                                                    </td>
                                                                 </tr>
                                                                 ';
                                                             }
