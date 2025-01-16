@@ -278,8 +278,8 @@
         window.print();
         setTimeout(() => {$("#clearance").hide() }, 3000)
     }
-    PrintElem("#clearance")
-    function Popup(data) 
+    // PrintElem("#clearance")
+    // function Popup(data) 
     {
         var mywindow = window.open('', 'my div', 'height=400,width=600');
         //mywindow.document.write('<html><head><title>my div</title>');

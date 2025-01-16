@@ -183,8 +183,7 @@ if (!isset($_SESSION['role'])) {
                                                                     ' . ($row['status'] == 'Ongoing Term' ? 'Current Official' : 'Former Official') . '
                                                                 </td>
                                                                 <td style="text-align: center;">
-                                                                <input type="submit" name="btn_recover"
-                                                                value="Recover"/>
+                                                                <input  type="submit" name="btn_recover" class="btn btn-primary btn-sm" value="Recover">
                                                                 </td>
                                                             </tr>';
                                                             include "edit_modal.php";

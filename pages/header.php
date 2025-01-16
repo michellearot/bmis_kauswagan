@@ -2,12 +2,16 @@
 
   echo'
     <script>
-    console.log(role='.$_SESSION["role"]=="Zone Leader".')
+    console.log(role='.$_SESSION["role"]=="Permit Admin".')
     </script>
   ';
 
     if($_SESSION["role"]=="Permit Admin"){
         $name = $_SESSION['username'];
+
+    } elseif ($_SESSION["role"] == "Staff") {
+        $name = "Staff";    
+
     }else{
         $name = $_SESSION['role'];
     }
@@ -21,7 +25,7 @@
    echo  '<header class="header" >
             <a href="#" class="logo" >
                 <!-- Add the class icon to your logo image or logo icon to add the margining -->
-                Barangay Information System
+                Kauswagan BMIS
             </a>
             <!-- Header Navbar: style can be found in header.less -->
             <nav class="navbar navbar-static-top" role="navigation">

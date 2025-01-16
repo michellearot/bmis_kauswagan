@@ -71,7 +71,7 @@
                             
                     </ul>';
                     }
-                    elseif($_SESSION['role'] == "Zone Leader"){
+                    elseif($_SESSION['role'] == "Permit Admin"){
                         echo '
                         <ul class="sidebar-menu">
                             <li>

@@ -1,5 +1,8 @@
+
+
 <!DOCTYPE html>
 <html>
+
 
     <?php
     session_start();
@@ -11,6 +14,97 @@
     {
     ob_start();
     include('../head_css.php'); ?>
+
+<head>
+<style>
+* {box-sizing: border-box;}
+ul {list-style-type: none;}
+body {font-family: Verdana, sans-serif;}
+
+.month {
+  padding: 70px 25px;
+  width: 100%;
+  background: #1abc9c;
+  text-align: center;
+}
+
+.month ul {
+  margin: 0;
+  padding: 0;
+}
+
+.month ul li {
+  color: white;
+  font-size: 20px;
+  text-transform: uppercase;
+  letter-spacing: 3px;
+}
+
+.month .prev {
+  float: left;
+  padding-top: 10px;
+}
+
+.month .next {
+  float: right;
+  padding-top: 10px;
+}
+
+.weekdays {
+  margin: 0;
+  padding: 10px 0;
+  background-color: #ddd;
+}
+
+.weekdays li {
+  display: inline-block;
+  width: 13.6%;
+  color: #666;
+  text-align: center;
+}
+
+.days {
+  padding: 10px 0;
+  background: #eee;
+  margin: 0;
+}
+
+.days li {
+  list-style-type: none;
+  display: inline-block;
+  width: 13.6%;
+  text-align: center;
+  margin-bottom: 5px;
+  font-size:12px;
+  color: #777;
+}
+
+.days li .active {
+  padding: 5px;
+  background: #1abc9c;
+  color: white !important
+}
+
+/* Add media queries for smaller screens */
+@media screen and (max-width:720px) {
+  .weekdays li, .days li {width: 13.1%;}
+}
+
+@media screen and (max-width: 420px) {
+  .weekdays li, .days li {width: 12.5%;}
+  .days li .active {padding: 2px;}
+}
+
+@media screen and (max-width: 290px) {
+  .weekdays li, .days li {width: 12.2%;}
+}
+</style>
+
+
+<link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+
+</head>
+
     <body class="skin-black">
         <!-- header logo: style can be found in header.less -->
         <?php 
@@ -60,102 +154,291 @@
                                     </div>                                
                                 </div><!-- /.box-header -->
                                 <div class="box-body table-responsive">
+
                                 <ul class="nav nav-tabs" id="myTab">
-                                    <li class="active"><a data-target="#approved" data-toggle="tab">Active</a></li>
-                                    <li><a data-target="#disapproved" data-toggle="tab">deleted</a></li>
+                                    <li class="active"><a data-target="#calendar" data-toggle="tab">Active</a></li>
+                                    <li><a data-target="#notcalendar" data-toggle="tab">deleted</a></li>
                                 </ul>
 
                                 <div class="tab-content">
-                                    <div id="approved" class="tab-pane active in">
-                                        <form method="post">
-                                        <table id="table" class="table table-bordered table-striped">
-                                            <thead>
-                                                <tr>
-                                                    <?php 
-                                                    if((!isset($_SESSION['staff'])) && (!isset($_SESSION['resident'])))
-                                                    {
-                                                    ?>
-                                                    <th style="width: 20px !important;">
-                                                        <!-- <input type="radio" name="chk_delete[]" class="cbxMain" onchange="checkMain(this)"/> -->
-                                                    </th>
-                                                    <?php
+                                    <div id="calendar" class="tab-pane active in">
+
+                                    <?php
+
+                                    $year = date('Y');
+                                    $month = date('F');
+                                    $currentDate = date('d');
+
+                                    $timestamp = time();
+
+                                
+                                        
+                                    $cars = array("Volvo", "BMW", "Toyota"); 
+                                    $months =  array("","January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December");
+
+                                    $days =  array("Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+
+                                    $checkMonth = 0;
+                                    for ($i = 0; $i < count($months); $i++) {
+                                        if($months[$i] === $month){
+                                            $checkMonth = $i;
+                                        }
+                                    }
+
+                                    echo $currentDate."-<br>";
+                                    $noDays=cal_days_in_month(CAL_GREGORIAN, $checkMonth ,date("Y"));
+                                  
+
+                                    $fff = date('F') .' '. date('Y');
+                                    
+                                    $firstday = trim( date('l ', strtotime($fff)) );
+                                    
+                                    
+
+                                
+                                    
+                
+                                    $skip = 0;
+
+                                    echo '<br>';
+                                    for ($i = 0; $i < count($days); $i++) {
+                                        if($days[$i] == $firstday){
+                                            $skip = $i;
+                                        }
+                                    }
+                                    
+                                    ?>
+
+                                    
+
+
+                                    <div class="month">      
+                                    <ul>
+                                        <li class="prev">&#10094;</li>
+                                        <li class="next">&#10095;</li>
+                                        <li>
+                                            <?php
+                                                echo  $month;
+                                            ?>
+                                        <br>
+                                        <span style="font-size:18px">
+                                            <?php
+                                                echo $year;
+                                            ?>
+                                        </span>
+                                        </li>
+                                    </ul>
+                                    </div>
+
+                                    <ul class="weekdays">
+
+                                    <?php
+                                    for ($i = 0; $i <count($days); $i++) {
+                                        echo "<li> $days[$i] </li>";
+                                    }
+                                    ?>
+                                    
+                                    
+                                    </ul>
+
+                                    <ul class="days">  
+
+                                    <?php
+
+                                    $skip = 0;
+
+                                    for ($i = 0; $i < count($days); $i++) {
+
+                                        if($days[$i] == $firstday){
+                                            $skip = $i;
+                                        }
+                                    }
+                                    // $aaa;
+                                    $my_array = array_fill(0, $skip, "");
+
+                                    for ($i = 1; $i <= $skip; $i++) {
+                                        echo "<li>  </li>";
+                                    }
+                                                        
+                                    for ($i = 1; $i <= $noDays; $i++) {
+
+                                        $squery = mysqli_query($con, "SELECT * FROM tblactivity where month(dateofactivity) =".$checkMonth);
+                                
+                                        while ($row = mysqli_fetch_array($squery)) {
+                                            $date=date_create($row['dateofactivity']);
+                                            $date =  intval(date_format($date,"d"));
+
+                                            // echo $date.'-' . $i.'|';
+
+                                            // <div id="id01" class="w3-modal">
+                                            //     <div class="w3-modal-content">
+                                            //     <div class="w3-container">
+                                            //         <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
+                                            //         <p>Some text. Some text. Some text.</p>
+                                            //         <p>Some text. Some text. Some text.</p>
+                                            //     </div>
+                                            //     </div>
+                                            // </div>
+                                            $emptyArray=array(); 
+  
+                                            // Push elements to the array 
+                                            // array_push($emptyArray, "geeks", "for", "geeks"); 
+                                            
+
+                                            if($date === $i){
+                                                array_push($emptyArray,$row['activity']);
+                                                // echo "<li><span class='active'> $i </span></li>";
+                                            }
+
+                                            if(  count( $emptyArray) > 0   ){
+
+                                                // $tagtext ='';
+
+                                                // for ($i=0; $i<=$emptyArray; $i++)
+                                                // {
+                                                //     // $tagtext .= $emptyArray[$i];
+                                                //     echo $emptyArray[$i];
+                                                //     break;
+                                                // }
+
+                                                // echo'
+                                                
+                                                // <div id="id01" class="w3-modal">
+                                                //     <div class="w3-modal-content">
+                                                //     <div class="w3-container">
+                                                //         <span onclick="document.getElementById("id01").style.display=none" class="w3-button w3-display-topright">&times;</span>
+
+                                                //         '.$tagtext.'
+                                                //     </div>
+                                                //     </div>
+                                                // </div>
+                                                
+                                                
+                                                // ';
+
+
+                                            }
+
+                                            // echo count( $emptyArray).'-';
+                                        }
+
+                                        if($i == $currentDate){
+
+                                            echo 
+                                            "<li>
+                                                <span class='active'>".$i."</span>
+                                            </li>";
+                                            continue;
+                                        }
+
+                                        echo 
+                                        "<li>".$i."</li>";
+                                    }
+                                    
+                                    ?>
+                                    
+                                    </ul>                                    
+                                    </div>
+
+                                    
+                                    <div id="notcalendar" class="tab-pane ">
+
+                                        <ul class="nav nav-tabs" id="myTab">
+                                            <li class="active"><a data-target="#approved" data-toggle="tab">Active</a></li>
+                                            <li><a data-target="#disapproved" data-toggle="tab">deleted</a></li>
+                                        </ul>
+
+                                        <div class="tab-content">
+                                            <div id="approved" class="tab-pane active in">
+                                                <form method="post">
+                                                <table id="table" class="table table-bordered table-striped">
+                                                    <thead>
+                                                        <tr>
+                                                            <?php 
+                                                            if((!isset($_SESSION['staff'])) && (!isset($_SESSION['resident'])))
+                                                            {
+                                                            ?>
+                                                            <th style="width: 20px !important;">
+                                                                <!-- <input type="radio" name="chk_delete[]" class="cbxMain" onchange="checkMain(this)"/> -->
+                                                            </th>
+                                                            <?php
+                                                                }
+                                                            ?>
+                                                            <th>Date of the Event</th>
+                                                            <th>Event</th>
+                                                            <th>Description</th>
+                                                            <th style="width: 140px !important;">Option</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                        if($_SESSION['role'] == "Administrator")
+                                                        {   
+
+                                                            $squery = mysqli_query($con, "select * from tblactivity");
+                                                            while($row = mysqli_fetch_array($squery))
+                                                            {
+                                                                echo '
+                                                                <tr>
+                                                                    <td><input type="radio" name="chk_delete[]" class="chk_delete" value="'.$row['id'].'" /></td>
+                                                                    <td>'.$row['dateofactivity'].'</td>
+                                                                    <td>'.$row['activity'].'</td>
+                                                                    <td>'.$row['description'].'</td>
+                                                                    <td>
+                                                                        <button class="btn btn-primary btn-sm" data-target="#editModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+                                                                        <button class="btn btn-primary btn-sm" data-target="#viewModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i> Photo</button>
+                                                                    </td>
+                                                                </tr>
+                                                                ';
+
+                                                                include "edit_modal.php";
+                                                                include "view_modal.php";
+                                                            }
+
                                                         }
-                                                    ?>
-                                                    <th>Date of the Event</th>
-                                                    <th>Event</th>
-                                                    <th>Description</th>
-                                                    <th style="width: 140px !important;">Option</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                <?php
-                                                if($_SESSION['role'] == "Administrator")
-                                                {   
+                                                        elseif(isset($_SESSION['resident'])){
+                                                            $squery = mysqli_query($con, "select * from tblactivity");
+                                                            while($row = mysqli_fetch_array($squery))
+                                                            {
+                                                                echo '
+                                                                <tr>
+                                                                    <td>'.$row['dateofactivity'].'</td>
+                                                                    <td>'.$row['activity'].'</td>
+                                                                    <td>'.$row['description'].'</td>
+                                                                    <td><button class="btn btn-primary btn-sm" data-target="#viewModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i> Photo</button></td>
+                                                                </tr>
+                                                                ';
 
-                                                    $squery = mysqli_query($con, "select * from tblactivity");
-                                                    while($row = mysqli_fetch_array($squery))
-                                                    {
-                                                        echo '
-                                                        <tr>
-                                                            <td><input type="radio" name="chk_delete[]" class="chk_delete" value="'.$row['id'].'" /></td>
-                                                            <td>'.$row['dateofactivity'].'</td>
-                                                            <td>'.$row['activity'].'</td>
-                                                            <td>'.$row['description'].'</td>
-                                                            <td>
-                                                                <button class="btn btn-primary btn-sm" data-target="#editModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
-                                                                <button class="btn btn-primary btn-sm" data-target="#viewModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i> Photo</button>
-                                                            </td>
-                                                        </tr>
-                                                        ';
+                                                                include "view_modal.php";
+                                                            }
+                                                        }
+                                                        else{
+                                                            $squery = mysqli_query($con, "select * from tblactivity");
+                                                            while($row = mysqli_fetch_array($squery))
+                                                            {
+                                                                echo '
+                                                                <tr>
+                                                                    <td>'.$row['dateofactivity'].'</td>
+                                                                    <td>'.$row['activity'].'</td>
+                                                                    <td>'.$row['description'].'</td>
+                                                                    <td>
+                                                                        <button class="btn btn-primary btn-sm" data-target="#editModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
+                                                                        <button class="btn btn-primary btn-sm" data-target="#viewModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i> Photo</button>
+                                                                    </td>
+                                                                </tr>
+                                                                ';
 
-                                                        include "edit_modal.php";
-                                                        include "view_modal.php";
-                                                    }
+                                                                include "edit_modal.php";
+                                                                include "view_modal.php";
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </tbody>
+                                                </table>
 
-                                                }
-                                                elseif(isset($_SESSION['resident'])){
-                                                    $squery = mysqli_query($con, "select * from tblactivity");
-                                                    while($row = mysqli_fetch_array($squery))
-                                                    {
-                                                        echo '
-                                                        <tr>
-                                                            <td>'.$row['dateofactivity'].'</td>
-                                                            <td>'.$row['activity'].'</td>
-                                                            <td>'.$row['description'].'</td>
-                                                            <td><button class="btn btn-primary btn-sm" data-target="#viewModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i> Photo</button></td>
-                                                        </tr>
-                                                        ';
+                                                <?php include "../deleteModal.php"; ?>
 
-                                                        include "view_modal.php";
-                                                    }
-                                                }
-                                                else{
-                                                    $squery = mysqli_query($con, "select * from tblactivity");
-                                                    while($row = mysqli_fetch_array($squery))
-                                                    {
-                                                        echo '
-                                                        <tr>
-                                                            <td>'.$row['dateofactivity'].'</td>
-                                                            <td>'.$row['activity'].'</td>
-                                                            <td>'.$row['description'].'</td>
-                                                            <td>
-                                                                <button class="btn btn-primary btn-sm" data-target="#editModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
-                                                                <button class="btn btn-primary btn-sm" data-target="#viewModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-search" aria-hidden="true"></i> Photo</button>
-                                                            </td>
-                                                        </tr>
-                                                        ';
-
-                                                        include "edit_modal.php";
-                                                        include "view_modal.php";
-                                                    }
-                                                }
-                                                ?>
-                                            </tbody>
-                                        </table>
-
-                                        <?php include "../deleteModal.php"; ?>
-
-                                        </form>
+                                                </form>
 
                                     </div>
 
@@ -219,6 +502,10 @@
                                     
                                     </div>
                                 </div>
+                                    </div>
+                                </div>
+
+                                
 
 
                                 </div><!-- /.box-body -->
