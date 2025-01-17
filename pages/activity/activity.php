@@ -24,7 +24,7 @@ body {font-family: Verdana, sans-serif;}
 .month {
   padding: 70px 25px;
   width: 100%;
-  background: #1abc9c;
+  background: #c35451;
   text-align: center;
 }
 
@@ -186,7 +186,7 @@ body {font-family: Verdana, sans-serif;}
                                         }
                                     }
 
-                                    echo $currentDate."-<br>";
+                                    // echo $currentDate."-<br>";
                                     $noDays=cal_days_in_month(CAL_GREGORIAN, $checkMonth ,date("Y"));
                                   
 
@@ -194,11 +194,6 @@ body {font-family: Verdana, sans-serif;}
                                     
                                     $firstday = trim( date('l ', strtotime($fff)) );
                                     
-                                    
-
-                                
-                                    
-                
                                     $skip = 0;
 
                                     echo '<br>';
@@ -215,8 +210,8 @@ body {font-family: Verdana, sans-serif;}
 
                                     <div class="month">      
                                     <ul>
-                                        <li class="prev">&#10094;</li>
-                                        <li class="next">&#10095;</li>
+                                        <!-- <li class="prev">&#10094;</li>
+                                        <li class="next">&#10095;</li> -->
                                         <li>
                                             <?php
                                                 echo  $month;
@@ -224,7 +219,8 @@ body {font-family: Verdana, sans-serif;}
                                         <br>
                                         <span style="font-size:18px">
                                             <?php
-                                                echo $year;
+                                            
+                                                echo $currentDate.'<br>'. $year;
                                             ?>
                                         </span>
                                         </li>
@@ -258,7 +254,7 @@ body {font-family: Verdana, sans-serif;}
                                     $my_array = array_fill(0, $skip, "");
 
                                     for ($i = 1; $i <= $skip; $i++) {
-                                        echo "<li>  </li>";
+                                        echo "<li>   </li>";
                                     }
                                                         
                                     for ($i = 1; $i <= $noDays; $i++) {
@@ -291,17 +287,23 @@ body {font-family: Verdana, sans-serif;}
                                                     break;
                                                 }
                                                 // <script></script>
+                                                // <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addModal"><i class="fa fa-user-plus" aria-hidden="true"></i> Add Event</button>  
+                                                
+                                                if($i < $currentDate){
 
-                                                echo'
+                                                    mysqli_query($con,"UPDATE tblactivity set Status = 'Ended' WHERE id ='".$row['id']."' ");
+                        
+
+                                                    echo'
                                                     <li> 
                                                         <div>
-                                                            <button onclick="document.getElementById("id01").style.display="block"'.'" class="w3-button w3-black">'.$i.'</button> 
+                                                            <button  background-color: #c35451 data-toggle="modal" data-target="#viewDate'.$i.$checkMonth.$year.'"">'.$i.'</button> 
                                                             <div id="id01" class="w3-modal">
                                                                 <div class="w3-modal-content">
                                                                 <div class="w3-container">
                                                                     <span onclick="document.getElementById("id01").style.display="none"'.'" class="w3-button w3-display-topright">&times;</span>
 
-                                                                    <p>asdasdasd</p>
+                                                                    <p>$tagtext</p>
                                                                 </div>
                                                                 </div>
                                                             </div>
@@ -309,6 +311,32 @@ body {font-family: Verdana, sans-serif;}
                                                     </li>  
 
                                                 ';
+                                                }else{
+
+                                                    echo'
+                                                    <li> 
+                                                        <div>
+                                                            <button data-toggle="modal" data-target="#viewDate'.$i.$checkMonth.$year.'" class="w3-button w3-black">'.$i.'</button> 
+                                                            <div id="id01" class="w3-modal">
+                                                                <div class="w3-modal-content">
+                                                                <div class="w3-container">
+                                                                    <span onclick="document.getElementById("id01").style.display="none"'.'" class="w3-button w3-display-topright">&times;</span>
+
+                                                                    <p>$tagtext</p>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>  
+
+                                                ';
+
+
+                                                }
+
+                                                
+
+                                                include "view_date.php";
 
                                                 // <div id="id01" class="w3-modal">
                                                 //     <div class="w3-modal-content">
@@ -338,12 +366,13 @@ body {font-family: Verdana, sans-serif;}
                                                 "<li>
                                                     <span class='active'>".$i."</span>
                                                 </li>";
-                                            }else{
-                                                echo 
-                                            "<li>".$i."</li>";
+                                            }
+                                            else{
+                                                echo '<li><button data-toggle="modal" data-target="#viewDate'.$i.$checkMonth.$year.'" class="w3-button">'.$i.'</button> </li> ';
 
                                             }
                                         }
+                                        include "view_date.php";
                                     }
                                     
                                     ?>
@@ -356,7 +385,7 @@ body {font-family: Verdana, sans-serif;}
 
                                         <ul class="nav nav-tabs" id="myTab">
                                             <li class="active"><a data-target="#approved" data-toggle="tab">Active</a></li>
-                                            <li><a data-target="#disapproved" data-toggle="tab">deleted</a></li>
+                                            <li><a data-target="#disapproved" data-toggle="tab">Event logs</a></li>
                                         </ul>
 
                                         <div class="tab-content">
@@ -473,14 +502,13 @@ body {font-family: Verdana, sans-serif;}
                                                     <th>Date of the Event</th>
                                                     <th>Event</th>
                                                     <th>Description</th>
-                                                    <th style="width: 140px !important;">Option</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 <?php
                                                   
 
-                                                    $squery = mysqli_query($con, "select * from tblactivity2");
+                                                    $squery = mysqli_query($con, "select * from tblactivity where Status ='Ended'");
                                                     while($row = mysqli_fetch_array($squery))
                                                     {
                                                         echo '
@@ -491,9 +519,7 @@ body {font-family: Verdana, sans-serif;}
                                                             <td>'.$row['dateofactivity'].'</td>
                                                             <td>'.$row['activity'].'</td>
                                                             <td>'.$row['description'].'</td>
-                                                            <td>
-                                                                <input  type="submit" name="btn_recover" class="btn btn-primary btn-sm" value="Recover"> 
-                                                            </td>
+                                                            
                                                         </tr>
                                                         ';
 

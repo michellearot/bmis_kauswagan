@@ -133,6 +133,141 @@
                                   </div>
                                   <!-- /.info-box -->
                                 </div>
+
+                                <div class="col-md-3 col-sm-6 col-xs-12"><br>
+                                  <div class="info-box">
+                                    <a href="../blotter/blotter.php"><span class="info-box-icon bg-aqua"><i class="fa fa-file"></i></span></a>
+
+                                    <div class="info-box-content">
+                                      <span class="info-box-text">Cedula Range</span>
+
+                                      <?php
+
+                                        
+                                      $fff = date('Y') .'-'. date('m') .'-'. intval(date('d'))-7;
+                                      
+                                      $firstday = date( "Y-m-d",strtotime($fff) );
+                                      echo'
+
+                                      
+                                      <form method="post">
+                                      
+                                        <input name="date1" class="form-control input-sm" type="date" placeholder="Date of Activity" value="'.$firstday.'"/>
+                                        -
+                                        <input name="date2" class="form-control input-sm" type="date" placeholder="Date of Activity" value="'.date("Y-m-d").'"/>
+                                      ';
+                                      
+                                      ?>
+    
+                                    <!-- <input name="txt_doc" class="form-control input-sm" type="date" placeholder="Date of Activity"/> -->
+                                      <span class="info-box-number">
+
+                                      
+                                      <input style='width: 100px;' type="submit" name="button1"
+                                                  class="btn btn-primary btn-sm" value="Go" /> <br>
+                                        <?php
+
+                                          if(isset($_POST['date1'])){
+                                            $txt_date1 = $_POST['date1'];
+                                            $txt_date2 = $_POST['date2'];
+                                          }else{
+                                            
+                                            $txt_date1 = $firstday;
+                                            $txt_date2 = date("Y-m-d");
+                                          }
+                                            
+
+                                            $q = mysqli_query($con,"SELECT * from tblcedula where dateCreated BETWEEN '".$txt_date1. "' AND '" .$txt_date2."'");
+                                            $num_rows = mysqli_num_rows($q);
+                                        
+                                            function button1() {
+                                              echo "";
+                                            }
+
+                                            if(array_key_exists('button1', $_POST)) {
+                                                button1();
+                                            }
+
+                                            
+                                            echo $num_rows;
+                                            
+                                        ?>                                      
+                                      </span>
+
+                                      </form>
+                                      
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                  </div>
+                                  <!-- /.info-box -->
+                                </div>
+
+                                <div class="col-md-3 col-sm-6 col-xs-12"><br>
+                                  <div class="info-box">
+                                    <a href="../blotter/blotter.php"><span class="info-box-icon bg-aqua"><i class="fa fa-file"></i></span></a>
+
+                                    <div class="info-box-content">
+                                      <span class="info-box-text">Clearance Range</span>
+
+                                      <?php
+
+                                        
+                                      $fff = date('Y') .'-'. date('m') .'-'. intval(date('d'))-7;
+                                      
+                                      $firstday = date( "Y-m-d",strtotime($fff) );
+                                      echo'
+
+                                      
+                                      <form method="post">
+                                      
+                                        <input name="clearance_date1" class="form-control input-sm" type="date" placeholder="Date of Activity" value="'.$firstday.'"/>
+                                        -
+                                        <input name="clearance_date2" class="form-control input-sm" type="date" placeholder="Date of Activity" value="'.date("Y-m-d").'"/>
+                                      ';
+                                      
+                                      ?>
+    
+                                    <!-- <input name="txt_doc" class="form-control input-sm" type="date" placeholder="Date of Activity"/> -->
+                                      <span class="info-box-number">
+                                        
+                                      <input style='width: 100px;' type="submit" name="buttonc1"
+                                                  class="btn btn-primary btn-sm" value="Go" /><br>
+                                        <?php
+
+                                          if(isset($_POST['clearance_date1'])){
+                                            $txt_clearance_date1 = $_POST['clearance_date1'];
+                                            $txt_clearance_date2 = $_POST['clearance_date2'];
+                                          }else{
+                                            
+                                            $txt_clearance_date1 = $firstday;
+                                            $txt_clearance_date2 = date("Y-m-d");
+                                          }
+                                            
+
+                                            $qc = mysqli_query($con,"SELECT * from tblclearance2 where dateCreated BETWEEN '".$txt_clearance_date1. "' AND '" .$txt_clearance_date2."'");
+                                            $num_rowsc = mysqli_num_rows($qc);
+                                        
+                                            function buttonc1() {
+                                              echo "";
+                                            }
+
+                                            if(array_key_exists('buttonc1', $_POST)) {
+                                                buttonc1();
+                                            }
+
+                                            
+                                            echo $num_rowsc;
+                                            
+                                        ?>                                      
+                                      </span>
+
+                                      </form>
+                                      
+                                    </div>
+                                    <!-- /.info-box-content -->
+                                  </div>
+                                  <!-- /.info-box -->
+                                </div>
                             </div><!-- /.box -->
                     </div>   <!-- /.row -->
                 </section><!-- /.content -->

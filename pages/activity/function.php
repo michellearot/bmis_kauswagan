@@ -14,8 +14,8 @@ if(isset($_POST['btn_add'])){
 
 
     //if($num_rows == 0){
-        $query = mysqli_query($con,"INSERT INTO tblactivity (dateofactivity,activity,description) 
-            values ('$txt_doc', '$txt_act', '$txt_desc')") or die('Error: ' . mysqli_error($con));
+        $query = mysqli_query($con,"INSERT INTO tblactivity (dateofactivity,activity,description,Status) 
+            values ('$txt_doc', '$txt_act', '$txt_desc','Ongoing')") or die('Error: ' . mysqli_error($con));
         $id = mysqli_insert_id($con);
         if(isset($_FILES['files']))
         {
