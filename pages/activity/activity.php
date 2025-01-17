@@ -102,6 +102,7 @@ body {font-family: Verdana, sans-serif;}
 
 
 <link href="https://fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i" rel="stylesheet">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 </head>
 
@@ -156,8 +157,8 @@ body {font-family: Verdana, sans-serif;}
                                 <div class="box-body table-responsive">
 
                                 <ul class="nav nav-tabs" id="myTab">
-                                    <li class="active"><a data-target="#calendar" data-toggle="tab">Active</a></li>
-                                    <li><a data-target="#notcalendar" data-toggle="tab">deleted</a></li>
+                                    <li class="active"><a data-target="#calendar" data-toggle="tab">Calendar</a></li>
+                                    <li><a data-target="#notcalendar" data-toggle="tab">Events List</a></li>
                                 </ul>
 
                                 <div class="tab-content">
@@ -263,27 +264,17 @@ body {font-family: Verdana, sans-serif;}
                                     for ($i = 1; $i <= $noDays; $i++) {
 
                                         $squery = mysqli_query($con, "SELECT * FROM tblactivity where month(dateofactivity) =".$checkMonth);
+
+
+                                        $skipAfter = FALSE;
+
+                                        
                                 
                                         while ($row = mysqli_fetch_array($squery)) {
                                             $date=date_create($row['dateofactivity']);
                                             $date =  intval(date_format($date,"d"));
 
-                                            // echo $date.'-' . $i.'|';
-
-                                            // <div id="id01" class="w3-modal">
-                                            //     <div class="w3-modal-content">
-                                            //     <div class="w3-container">
-                                            //         <span onclick="document.getElementById('id01').style.display='none'" class="w3-button w3-display-topright">&times;</span>
-                                            //         <p>Some text. Some text. Some text.</p>
-                                            //         <p>Some text. Some text. Some text.</p>
-                                            //     </div>
-                                            //     </div>
-                                            // </div>
-                                            $emptyArray=array(); 
-  
-                                            // Push elements to the array 
-                                            // array_push($emptyArray, "geeks", "for", "geeks"); 
-                                            
+                                            $emptyArray=array();           
 
                                             if($date === $i){
                                                 array_push($emptyArray,$row['activity']);
@@ -292,47 +283,67 @@ body {font-family: Verdana, sans-serif;}
 
                                             if(  count( $emptyArray) > 0   ){
 
-                                                // $tagtext ='';
+                                                $tagtext = '';
+                                                for ($j=0; $i<=$emptyArray; $j++)
+                                                {
+                                                    $tagtext .= '<p>'.$emptyArray[$j].'</p>'  ;
+                                                    // echo $emptyArray[$j];
+                                                    break;
+                                                }
+                                                // <script></script>
 
-                                                // for ($i=0; $i<=$emptyArray; $i++)
-                                                // {
-                                                //     // $tagtext .= $emptyArray[$i];
-                                                //     echo $emptyArray[$i];
-                                                //     break;
-                                                // }
+                                                echo'
+                                                    <li> 
+                                                        <div>
+                                                            <button onclick="document.getElementById("id01").style.display="block"'.'" class="w3-button w3-black">'.$i.'</button> 
+                                                            <div id="id01" class="w3-modal">
+                                                                <div class="w3-modal-content">
+                                                                <div class="w3-container">
+                                                                    <span onclick="document.getElementById("id01").style.display="none"'.'" class="w3-button w3-display-topright">&times;</span>
 
-                                                // echo'
-                                                
+                                                                    <p>asdasdasd</p>
+                                                                </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </li>  
+
+                                                ';
+
                                                 // <div id="id01" class="w3-modal">
                                                 //     <div class="w3-modal-content">
                                                 //     <div class="w3-container">
-                                                //         <span onclick="document.getElementById("id01").style.display=none" class="w3-button w3-display-topright">&times;</span>
+                                                //         <span onclick="document.getElementById("id01").style.display="none"'.'" class="w3-button w3-display-topright">&times;</span>
 
-                                                //         '.$tagtext.'
+                                                //         <p>asdasdasd</p>
                                                 //     </div>
                                                 //     </div>
                                                 // </div>
-                                                
-                                                
-                                                // ';
 
+                                                $skipAfter = TRUE;
 
                                             }
+                                    
 
                                             // echo count( $emptyArray).'-';
                                         }
-
-                                        if($i == $currentDate){
-
-                                            echo 
-                                            "<li>
-                                                <span class='active'>".$i."</span>
-                                            </li>";
+                                        
+                                        if( $skipAfter ){
                                             continue;
                                         }
+                                        if ($squery->num_rows > 0){
+                                            if($i == $currentDate){
 
-                                        echo 
-                                        "<li>".$i."</li>";
+                                                echo 
+                                                "<li>
+                                                    <span class='active'>".$i."</span>
+                                                </li>";
+                                            }else{
+                                                echo 
+                                            "<li>".$i."</li>";
+
+                                            }
+                                        }
                                     }
                                     
                                     ?>
