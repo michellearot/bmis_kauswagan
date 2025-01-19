@@ -472,4 +472,79 @@ if(isset($_POST['btn_recover']))
     }
 }
 
+if(isset($_POST['btn_clearance_add'])){
+    $ddl_resident = $_POST['ddl_resident'];    
+    $txt_clearanceNumber = $_POST['txt_clearanceNumber'];
+    $date = date('Y-m-d');
+
+    $num_rows = 0;
+
+    if(isset($_SESSION['role'])){
+        $action = 'Added Clearance with clearance for '.$ddl_resident;
+        $iquery = mysqli_query($con,"INSERT INTO tbllogs (user,logdate,action) values ('".$_SESSION['role']."', NOW(), '".$action."')");
+    }
+
+    if($num_rows == 0){
+        
+    
+        if($_SESSION['role'] == "Administrator"){
+            // $query = mysqli_query($con,"INSERT INTO tblclearance2 (clearanceNo,residentid,findings,purpose,orNo,samount,dateRecorded,recordedBy,status) 
+            // values ('$txt_cnum','$ddl_resident', '$txt_findings','$txt_purpose', '$txt_ornum', '$txt_amount', '$date', '".$_SESSION['username']."','Approved')") or die('Error: ' . mysqli_error($con));
+            
+            $query = mysqli_query($con,"INSERT INTO tblclearance2 (
+                ResidentId,
+                Approved,
+                dateCreated,
+                clearanceNo
+            ) 
+            values (
+                '$ddl_resident', 
+                'APPROVED',
+                '$date' ,
+                '$txt_clearanceNumber'
+                
+            )"
+                
+            ) or die('Error: ' . mysqli_error($con));
+    
+    
+        }
+        else{
+
+            $query = mysqli_query($con,"INSERT INTO tblclearance2 (
+                ResidentId,
+                Approved,
+                dateCreated,
+                clearanceNo
+            ) 
+            values (
+                '$ddl_resident', 
+                'PENDING',
+                '$date' ,
+                '$txt_clearanceNumber'
+            )"
+                
+            ) or die('Error: ' . mysqli_error($con));
+        }
+
+
+
+
+        if($query == true)
+        {
+            $_SESSION['added'] = 1;
+
+            // <a target="_blank" href="../clearance/clearance_form.php?resident='.$row['id'].'&clearance=false &val='.base64_encode($row['id'].'|'.$row['cname']).'" onclick="location.reload();" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Create Clearance</a></td>                                              
+                                                                        
+            header ('location: ../clearance/clearance_form.php?resident='.$ddl_resident.'&clearance=false &val='.base64_encode($ddl_resident.'|').'"');
+            // header ("location: ".$_SERVER['REQUEST_URI']);
+        }   
+    }
+    else{
+        $_SESSION['duplicate'] = 1;
+        header ("location: ".$_SERVER['REQUEST_URI']);
+    }
+}
+
+
 ?>

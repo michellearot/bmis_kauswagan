@@ -194,7 +194,7 @@
                                         ?>                                      
                                       </span>
 
-                                      </form>
+                              `        </form>
                                       
                                     </div>
                                     <!-- /.info-box-content -->

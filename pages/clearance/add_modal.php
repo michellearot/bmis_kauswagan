@@ -13,7 +13,7 @@
                         <div class="col-md-12">
                                 <div class="form-group">
                                     <label>Resident:</label>
-                                    <select name="ddl_resident" class="select2 form-control input-sm" style="width:100%">
+                                    <select name="ddl_resident" class="select2 form-control input-sm-12" style="width:100%">
                                         <option selected="" disabled="">-- Select Resident -- </option>
                                         <?php
                                             // $squery = mysqli_query($con,"SELECT r.id,r.lname,r.fname,r.mname from tblresident r where ((r.id not in (select personToComplain from tblblotter)) or (r.id in (select personToComplain from tblblotter where sStatus = 'Solved')) ) and lengthofstay >= 6");
@@ -23,9 +23,16 @@
                                                     <option value="'.$row['id'].'">'.$row['lname'].', '.$row['fname'].' '.$row['mname'].'</option>    
                                                 ';
                                             }
+                                            
                                         ?>
+                                    
+                                    <br>
                                     </select>
                                 </div>
+                                
+                                <div  class="col-sm-15">
+                                    <input name="txt_clearanceNumber" class="form-control input-sm" placeholder="Clearance No." />
+                                </div> 
                                 
                                 
 

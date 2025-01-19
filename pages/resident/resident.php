@@ -112,6 +112,41 @@
                                                                 <td>'.$row['formerAddress'].'</td>
                                                                 <td>
 
+                                                                <div id="myModal'.$row['id'].'" class="modal fade" role="dialog">
+
+                                                                    <form  method="post">
+                                                                        <div class="modal-dialog modal-sm">
+
+                                                                        <!-- Modal content-->
+                                                                        <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                        <h4 class="modal-title">'.$row['cname'].'<br></h4>
+                                                                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                                                            <h4 class="modal-title">Enter Clearance No.</h4>
+                                                                        </div>
+                                                                        <div class="col-sm-12">
+                                                                        
+                                                                            <textarea style="display:none" name="ddl_resident" value ="'.$row['id'].'"> '.$row['id'].'  </textarea>
+                                                                    
+                                                                            <input name="txt_clearanceNumber" class="form-control input-sm" type="text" />
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                
+
+                                                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                                                            
+                                                                            <Button type="submit" class="btn btn-primary btn-sm fa fa-pencil-square-o" name="btn_clearance_add" value="Add Clearance">
+                                                                            
+                                                                                <a target="_blank" href="../clearance/clearance_form.php?resident='.$row['id'].'&clearance=false &val='.base64_encode($row['id'].'|'.$row['cname']).'" onclick="location.reload(); ">
+                                                                                    
+                                                                            </a>
+                                                                            <Button>
+                                                                            
+                                                                        </div>
+                                                                        </div>
+                                                                    </form>
+                                                                    </div>
+                                                                </div>
                                                                     
 
                                                                     <div class="dropdown">
@@ -120,8 +155,8 @@
                                                                         </button>
                                                                         <div class="dropdown-menu" aria-labelledby="dropdownMenu2">
                                                                             <button class="btn btn-primary btn-sm" data-target="#editModal'.$row['id'].'" data-toggle="modal"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</button>
-                                                                            <a target="_blank" href="../permit/cedula_form.php?resident='.$row['id'].'&cedula=false" onclick="location.reload();" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Create Cedula</a>
-                                                                            <a target="_blank" href="../clearance/clearance_form.php?resident='.$row['id'].'&clearance=false &val='.base64_encode($row['id'].'|'.$row['cname']).'" onclick="location.reload();" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Create Clearance</a></td>                                              
+                                                                            <a target="_blank" href="../permit/cedula_form.php?resident='.$row['id'].'&cedula=false" onclick="location.reload();" class="btn btn-primary btn-sm"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Create Cedula</a> 
+                                                                            <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal'.$row['id'].'">Generate Clearance</button>
                                                                         </div>    
                                                                     </div>
                                                                 </td>
@@ -129,6 +164,8 @@
                                                             ';
 
                                                             include "edit_modal.php";
+                                                            include "clearance_no.php";
+
                                                         }
                                                     }
                                                     else{

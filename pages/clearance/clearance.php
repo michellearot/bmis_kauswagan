@@ -118,7 +118,7 @@ if ($_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Resident" || (
                                                             echo '
                                                             <tr>
                                                                 <td><input type="checkbox" name="chk_delete[]" class="chk_delete" value="'.$row['id'].'" /></td>
-                                                                <td>'.$row['id'].'</td>
+                                                                <td>'.$row['clearanceNo'].'</td>
                                                                 <td>'.$nameq[0].' '.$nameq[1].'</td>
                                                                 <td>'.$row['Address'].'</td>
                                                                 <td>'.$row['Purpose'].'</td>
@@ -204,7 +204,7 @@ if ($_SESSION['role'] == "Administrator" || $_SESSION['role'] == "Resident" || (
                                                     echo '
                                                     <tr>
                                                         <td><input type="checkbox" name="chk_delete[]" class="chk_delete" value="' . $row['id'] . '" /></td>
-                                                        <td>' . $row['id'] . '</td>
+                                                        <td>' . $row['clearanceNo'] . '</td>
                                                         <td>' .$nameq[0].' '.$nameq[1] . '</td>
                                                         <td>' . $row['Address'] . '</td>
                                                         <td>' . $row['Purpose'] . '</td>

@@ -1,21 +1,7 @@
 <?php
 if(isset($_POST['btn_add'])){
-    $ddl_resident = $_POST['ddl_resident'];
-    $txt_address = $_POST['txt_address'];
-    $txt_birthdate = $_POST['txt_birthdate'];
-    $txt_age = $_POST['txt_age'];
-    $txt_bloodType = $_POST['txt_bloodType'];
-    $txt_contactNumber = $_POST['txt_contactNumber'];
-    $txt_birthPlace = $_POST['txt_birthPlace'];
-    $txt_civilStatus = $_POST['txt_civilStatus'];
-    $txt_years = $_POST['txt_years'];
-    $txt_email = $_POST['txt_email'];
-    $txt_for = $_POST['txt_for'];
-    $txt_purpose = $_POST['txt_purpose'];
-    $txt_others = $_POST['txt_others'];
-    $txt_remarks = $_POST['txt_remarks'];
-    $txt_indigencyApproved = $_POST['txt_indigencyApproved'];
-    $txt_luponApproved = $_POST['txt_luponApproved'];
+    $ddl_resident = $_POST['ddl_resident'];    
+    $txt_clearanceNumber = $_POST['txt_clearanceNumber'];
     $date = date('Y-m-d');
 
 //     // $chkdup = mysqli_query($con,"SELECT * from tblclearance where clearanceNo = ".$txt_cnum." ");
@@ -37,43 +23,16 @@ if(isset($_POST['btn_add'])){
             
             $query = mysqli_query($con,"INSERT INTO tblclearance2 (
                 ResidentId,
-                Address,
-                Birthdate,
-                Age,
-                BloodType,
-                ContactNumber,
-                BirthPlace,
-                CivilStatus,
-                YearsKauswagan,
-                Email,
-                ForPurpose,
-                Purpose,
-                Others,
-                Remarks,
-                IndigencyApproved,
-                LuponApproval,
                 Approved,
-                dateCreated
+                dateCreated,
+                clearanceNo
             ) 
             values (
-                '$ddl_resident',
-                '$txt_address',
-                '$txt_birthdate',
-                '$txt_age',
-                '$txt_bloodType',
-                '$txt_contactNumber',
-                '$txt_birthPlace',
-                '$txt_civilStatus',
-                '$txt_years',
-                '$txt_email',
-                '$txt_for',
-                '$txt_purpose',
-                '$txt_others',
-                '$txt_remarks',
-                '$txt_indigencyApproved',
-                '$txt_luponApproved', 
+                '$ddl_resident', 
                 'APPROVED',
-                '$date' 
+                '$date' ,
+                '$txt_clearanceNumber'
+                
             )"
                 
             ) or die('Error: ' . mysqli_error($con));
@@ -84,43 +43,15 @@ if(isset($_POST['btn_add'])){
 
             $query = mysqli_query($con,"INSERT INTO tblclearance2 (
                 ResidentId,
-                Address,
-                Birthdate,
-                Age,
-                BloodType,
-                ContactNumber,
-                BirthPlace,
-                CivilStatus,
-                YearsKauswagan,
-                Email,
-                ForPurpose,
-                Purpose,
-                Others,
-                Remarks,
-                IndigencyApproved,
-                LuponApproval,
                 Approved,
-                dateCreated
+                dateCreated,
+                clearanceNo
             ) 
             values (
-                '$ddl_resident',
-                '$txt_address',
-                '$txt_birthdate',
-                '$txt_age',
-                '$txt_bloodType',
-                '$txt_contactNumber',
-                '$txt_birthPlace',
-                '$txt_civilStatus',
-                '$txt_years',
-                '$txt_email',
-                '$txt_for',
-                '$txt_purpose',
-                '$txt_others',
-                '$txt_remarks',
-                '$txt_indigencyApproved',
-                '$txt_luponApproved', 
+                '$ddl_resident', 
                 'PENDING',
-                '$date' 
+                '$date' ,
+                '$txt_clearanceNumber'
             )"
                 
             ) or die('Error: ' . mysqli_error($con));

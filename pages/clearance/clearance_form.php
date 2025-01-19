@@ -28,12 +28,18 @@
             echo'
         
                 <script>
-                console.log('.  $_GET['clearance']  .')
+                console.log("c-",'.  is_int( intval($_GET['clearance']) )  .')
+                
+                console.log("r-",'.  $_GET['resident']  .')
                 </script>
                 
             ';    
 
-            if ( $_GET['clearance']){
+            if ( is_int( intval($_GET['clearance']) ) ==1  ){
+
+                $last_id = $_GET['clearance'];
+
+            }elseif( $_GET['clearance']){
                 echo'
             
                     <script>
@@ -45,15 +51,10 @@
                 $date = date('Y-m-d H:i:s');
 
                 $query = mysqli_query($con,
-                "INSERT INTO tblclearance2 (
-                    ResidentId,DateCreated,APPROVED) 
-                    values (
-                    ".$_GET['resident'].",
-                    '".$date."',
-                    'APPROVED')"
+                "SELECT MAX(id) from tblclearance2"
                 ) or die('Error: ' . mysqli_error($con));
 
-                $last_id = mysqli_insert_id($con);
+                $last_id = mysqli_fetch_array($query)[0];
                 echo "
                 <script>
                     console.log(' New record created successfully. Last inserted ID is: '," . $last_id .")
@@ -192,7 +193,7 @@
 
                    
                         
-                            $qry=mysqli_query($con,"SELECT * from tblresident r left join tblclearance2 c on c.ResidentId = r.id where residentid = '".$_GET['resident']."'");
+                            $qry=mysqli_query($con,"SELECT * from tblresident r left join tblclearance2 c on c.ResidentId = r.id where c.id = '".$last_id."'");
                             while($row = mysqli_fetch_array($qry)){
                                 $bdate = date_create($row['Birthdate']);
                                 $date = date_create($row['dateCreated']);
@@ -201,16 +202,15 @@
                                     SURNAME: <u>'.strtoupper($row['lname']).'</u><br>
                                     FIRST NAME: <u>'.strtoupper($row['fname']).'</u><br>
                                     MIDDLE NAME: <u>'.strtoupper($row['mname']).'</u><br>
-                                    ADDRESS: <u>'.strtoupper($row['formerAddress']).'</u><br>
+                                    ADDRESS: <u>Kauswagan, Cagayan de Oro City</u><br>
                                     BIRTHDATE & PLACE: <u>'.strtoupper(date_format($bdate,"m-d-Y")).'/'.strtoupper($row['bplace']).'</u><br>
                                     GENDER/CIVIL STATUS: <u>'.strtoupper($row['gender']).'/SINGLE</u><br>
                                     NATIONALITY: <u>'.strtoupper($row['nationality']).'</u><br>
                                     RELIGION: <u>'.strtoupper($row['religion']).'</u><br>
-                                    PURPOSE: <u>'.strtoupper($row['Purpose']).'</u><br>
                                     FINDINGS: <u>NO DEROGATORY RECORD</u><br>
                                 </b></p>
                                 <p><b>
-                                    RES. CERT. NO.: <u>'.strtoupper($row['id']).'</u><br>
+                                    RES. CERT. NO.: <u>'.strtoupper($row['clearanceNo']).'</u><br>
                                     ISSUED ON: <u>'.strtoupper(date_format($date,"F j, o")).'</u><br>
                                     ISSUED AT: <u>KAUSWAGAN OFFICE</u><br>
                                     ISSUED ON: <u>'.strtoupper(date_format($date,"F j, o")).'</u><br>
