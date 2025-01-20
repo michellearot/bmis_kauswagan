@@ -71,6 +71,44 @@ if(isset($_POST['btn_add'])){
         header ("location: ".$_SERVER['REQUEST_URI']);
     }
 }
+if(isset($_POST['btn_add_cedula'])){
+
+    $txt_id = $_POST['ddl_resident']; 
+    $date = date('Y-m-d H:i:s');
+
+    if(isset($_SESSION['role'])){
+        $action = 'Added cedula with name of '.$txt_cname;
+        $iquery = mysqli_query($con,"INSERT INTO tbllogs (user,logdate,action) values ('".$_SESSION['role']."', NOW(), '".$action."')");
+    }
+
+    if($_SESSION['role'] == "Administrator")
+    {
+        $query = mysqli_query($con,"INSERT INTO tblcedula (
+            ResidentId,DateCreated,Status 
+        ) 
+        values (
+            '$txt_id',  
+            '$date',
+            'APPROVED')"
+        ) or die('Error: ' . mysqli_error($con));
+    }
+    else
+    {
+        $query = mysqli_query($con,"INSERT INTO tblcedula (
+            ResidentId,DateCreated,Status 
+        ) 
+        values (
+            '$txt_id', 
+            '$date',
+            'PENDING')"
+        ) or die('Error: ' . mysqli_error($con));
+    }
+    if($query == true)
+    {
+        $_SESSION['added'] = 1;
+        header ("location: ".$_SERVER['REQUEST_URI']);
+    }   
+}
 
 if(isset($_POST['btn_req'])){
     $chkblot = mysqli_query($con,"select * from tblresident where '".$_SESSION['userid']."' not in (select complainant from tblblotter)");

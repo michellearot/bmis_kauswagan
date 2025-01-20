@@ -110,7 +110,7 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="../clearance/clearance.php">
+                                <a href="../clearance/clearance.php?tab=clearanceTab">
                                     <i class="fa fa-file"></i> <span>Clearance</span>
                                 </a>
                             </li>
