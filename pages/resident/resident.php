@@ -137,7 +137,7 @@
                                                                             
                                                                             <Button type="submit" class="btn btn-primary btn-sm fa fa-pencil-square-o" name="btn_clearance_add" value="Add Clearance">
                                                                             
-                                                                                <a target="_blank" href="../clearance/clearance_form.php?resident='.$row['id'].'&clearance=false &val='.base64_encode($row['id'].'|'.$row['cname']).'" onclick="location.reload(); ">
+                                                                                <a target="_blank" href="../clearance/clearance_form.php?resident='.$row['id'].'&clearance=false&val='.base64_encode($row['id'].'|'.$row['cname']).'" onclick="location.reload(); ">
                                                                                     
                                                                             </a>
                                                                             <Button>

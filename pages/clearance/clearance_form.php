@@ -33,13 +33,21 @@
                 console.log("r-",'.  $_GET['resident']  .')
                 </script>
                 
-            ';    
-
-            if ( is_int( intval($_GET['clearance']) ) ==1  ){
+            '; 
+            
+            if(intval($_GET['clearance']) >0 ) {
 
                 $last_id = $_GET['clearance'];
 
-            }elseif( $_GET['clearance']){
+                echo'
+            
+                    <script>
+                        console.log("clearance = false")
+                    </script>
+                    
+                ';    
+
+            }elseif(is_int( intval($_GET['clearance']) ) ==1 ){
                 echo'
             
                     <script>
@@ -180,12 +188,12 @@
                             $res = $_GET['resident'];
                             $cle = $_GET['clearance'];
 
-                            echo("
+                            echo"
                             <script>
                                 console.log(".$res.")
                                 console.log(".$cle.")
                             </script>
-                            ")
+                            ";
                         
                         ?>
 
